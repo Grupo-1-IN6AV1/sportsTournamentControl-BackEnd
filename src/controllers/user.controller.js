@@ -100,3 +100,34 @@ exports.delete = async(req, res)=>{
         return res.status(500).send({err, message: 'Error deleting user'});
     }
 }
+
+//FUNCIONES PRIVADAS
+//ADMIN
+
+exports.saveUser = async(req, res)=>{
+    try{
+        const params = req.body;
+        const data = {
+            name: params.name,
+            username: params.username,
+            email: params.email,
+            password: params.password,
+            role: params.role
+        };
+        const msg = validateData(data);
+        if(msg) return res.status(400).send(msg);
+        const userExist = await alreadyUser(params.username);
+        if(userExist) return res.send({message: 'Username already in use'});
+        if(params.role != 'ADMIN' && params.role != 'CLIENT') return res.status(400).send({message: 'Invalid role'});
+        data.surname = params.surname;
+        data.phone = params.phoe;
+        data.password = await encrypt(params.password);
+
+        const user = new User(data);
+        await user.save();
+        return res.send({message: 'User saved successfully'});
+    }catch(err){
+        console.log(err);
+        return res.status(500).send({err, message: 'Error saving user'});
+    }
+}
