@@ -30,3 +30,12 @@ exports.encrypt = async (password) => {
         return err;
     }
 }
+
+exports.checkPassword = async (password, hash)=>{
+    try{
+        return bcrypt.compareSync(password, hash);
+    }catch(err){
+        console.log(err);
+        return err;
+    }
+}
