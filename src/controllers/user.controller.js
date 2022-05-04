@@ -3,6 +3,7 @@
 const User = require('../models/user.model');
 const {validateData, encrypt, alreadyUser, 
     checkPassword} = require('../utils/validate');
+const jwt = require('../services/jwt');
 
 //FUNCIONES PÚBLICAS
 
@@ -58,5 +59,30 @@ exports.login = async(req, res)=>{
     }catch(err){
         console.log(err);
         return res.status(500).send({err, message: 'Failed to login'});
+    }
+}
+
+//FUNCIONES PRIVADAS
+//CLIENT
+
+exports.update = async(req, res)=>{
+    try{
+        const userId = req.params.id;
+        const params = req.body;
+
+        const permission = await checkPermission(userId, req.user.sub);
+        if(permission === false) return res.status(401).send({message: 'You dont have permission to update this user'});
+        const userExist = await User.findOne({_id: userId});
+        if(!userExist) return res.send({message: 'User not found'});
+        const validateUpdate = await checkUpdate(params);
+        if(validateUpdate === false) return res.status(400).send({message: 'Cannot update this information or invalid params'});
+        let alreadyname = await alreadyUser(params.username);
+        if(alreadyname && userExist.username != params.username) return res.send({message: 'Username already in use'});
+        const userUpdate = await User.findOneAndUpdate({_id: userId}, params, {new: true}).lean();
+        if(userUpdate) return res.send({message: 'User updated', userUpdate});
+        return res.send({message: 'User not updated'});
+    }catch(err){
+        console.log(err);
+        return res.status(500).send({err, message: 'Failed to update user'});
     }
 }
