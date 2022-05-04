@@ -86,3 +86,17 @@ exports.update = async(req, res)=>{
         return res.status(500).send({err, message: 'Failed to update user'});
     }
 }
+
+exports.delete = async(req, res)=>{
+    try{
+        const userId = req.params.id;
+        const persmission = await checkPermission(userId, req.user.sub);
+        if(persmission === false) return res.status(403).send({message: 'You dont have permission to delete this user'});
+        const userDeleted = await User.findOneAndDelete({_id: userId});
+        if(userDeleted) return res.send({message: 'Account deleted', userDeleted});
+        return res.send({message: 'User not found or already deleted'});
+    }catch(err){
+        console.log(err);
+        return res.status(500).send({err, message: 'Error deleting user'});
+    }
+}
