@@ -30,3 +30,44 @@ exports.encrypt = async (password) => {
         return err;
     }
 }
+
+exports.checkPassword = async (password, hash)=>{
+    try{
+        return bcrypt.compareSync(password, hash);
+    }catch(err){
+        console.log(err);
+        return err;
+    }
+}
+
+exports.checkPermission = async (userId, sub)=>{
+    try{
+        if(userId != sub){
+            return false;
+        }else{
+            return true;
+        }
+    }catch(err){
+        console.log(err);
+        return err;
+    }
+}
+
+exports.checkUpdate = async (user)=>{
+    if(user.password || 
+       Object.entries(user).length === 0 || 
+       user.role){
+        return false;
+    }else{
+        return true;
+    }
+}
+
+exports.checkUpdateAdmin = async(user)=>{
+    if(user.password ||
+       Object.entries(user).length === 0){
+        return false;
+    }else{
+        return true;
+    }
+}
