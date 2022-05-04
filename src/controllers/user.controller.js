@@ -155,3 +155,4 @@ exports.updateUser = async(req, res)=>{
         return res.status(500).send({err, message: 'Error updating user'});
     }
 }
+
