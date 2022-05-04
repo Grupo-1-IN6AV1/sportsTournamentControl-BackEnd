@@ -1,0 +1,19 @@
+{
+  "name": "sportstournamentcontrol-backend",
+  "version": "1.0.0",
+  "description": "API - Control of Tournament Sports (Back-End).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Grupo-1-IN6AV1/sportsTournamentControl-BackEnd.git"
+  },
+  "author": "Grupo 1 - IN6AV1",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Grupo-1-IN6AV1/sportsTournamentControl-BackEnd/issues"
+  },
+  "homepage": "https://github.com/Grupo-1-IN6AV1/sportsTournamentControl-BackEnd#readme"
+}
