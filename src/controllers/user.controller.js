@@ -2,7 +2,8 @@
 
 const User = require('../models/user.model');
 const {validateData, encrypt, alreadyUser, 
-    checkPassword, checkUpdate, checkPermission} = require('../utils/validate');
+    checkPassword, checkUpdate, checkPermission,
+    checkUpdateAdmin} = require('../utils/validate');
 const jwt = require('../services/jwt');
 
 //FUNCIONES PÚBLICAS
@@ -129,5 +130,28 @@ exports.saveUser = async(req, res)=>{
     }catch(err){
         console.log(err);
         return res.status(500).send({err, message: 'Error saving user'});
+    }
+}
+
+exports.updateUser = async(req, res)=>{
+    try{
+        const userId = req.params.id;
+        const params = req.body;
+
+        const userExist = await User.findOne({_id: userId});
+        if(!userExist) return res.send({message: 'User not found'});
+        const emptyParams = await checkUpdateAdmin(params);
+        if(emptyParams === false) return res.status(400).send({message: 'Empty params or params not update'});
+        if(userExist.role === 'ADMIN') return res.send({message: 'User with ADMIN role cant update'});
+        const alreadyUsername = await alreadyUser(params.username);
+        if(alreadyUsername && userExist.username != alreadyUsername.username) return res.send({message: 'Username already taken'});
+        if(params.role != 'ADMIN' && params.role != 'CLIENT') return res.status(400).send({message: 'Invalid role'});
+        const userUpdated = await User.findOneAndUpdate({_id: userId}, params, {new: true});
+        if(!userUpdated) return res.send({message: ' User not updated'});
+        return res.send({message: 'User updated successfully', username: userUpdated.username});
+
+    }catch(err){
+        console.log(err);
+        return res.status(500).send({err, message: 'Error updating user'});
     }
 }
