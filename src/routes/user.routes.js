@@ -6,7 +6,7 @@ const api = express.Router();
 const mdAuth = require('../services/authenticated');
 
 //FUNCIÓN PÚBLICA
-api.get('/pruebaUser', userController.prueba);
+api.get('/userTest', userController.userTest);
 //FUNCIONES PRIVADAS
 //CLIENT
 api.post('/register', userController.register);
