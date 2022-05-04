@@ -2,7 +2,7 @@
 
 const User = require('../models/user.model');
 const {validateData, encrypt, alreadyUser, 
-    checkPassword} = require('../utils/validate');
+    checkPassword, checkUpdate, checkPermission} = require('../utils/validate');
 const jwt = require('../services/jwt');
 
 //FUNCIONES PÚBLICAS
