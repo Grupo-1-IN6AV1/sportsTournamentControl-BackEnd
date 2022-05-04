@@ -156,3 +156,24 @@ exports.updateUser = async(req, res)=>{
     }
 }
 
+exports.deleteUser = async(req, res)=>{
+    try{
+            //Captuar el id
+            //Verificar que exista el usuario
+            //Verificar que el usuario a eliminar no sea ADMIN
+            //Eliminar
+            //Verificar que se haya eliminado
+
+        const userId = req.params.id;
+
+        const userExist = await User.findOne({_id: userId});
+        if(!userExist) return res.send({message: 'User not found'});
+        if(userExist.role === 'ADMIN') return res.send({message: ' Could not detel user with ADMIN role'});
+        const userDeleted = await User.findOneAndDelete({_id: userId});
+        if(!userDeleted) return res.send({message: 'User not deleted'});
+        return res.send({message: 'Account deleted successfully', userDeleted})
+    }catch(err){
+        console.log(err);
+        return res.status(500).send({err, message: 'Error removing account'});
+    }
+}
