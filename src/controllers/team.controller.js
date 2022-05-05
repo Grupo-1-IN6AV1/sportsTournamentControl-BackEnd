@@ -95,3 +95,19 @@ exports.updateTeam = async(req, res)=>
         return res.status(500).send({err, message: 'Error updating Team.'});
     }
 }
+
+
+//LISTAR || Ver Equipos de Usuario//
+exports.getTeamsUser = async(req,res)=>
+{
+    try
+    {
+        const teams = await Team.find().lean();
+        return res.send({message:'Teams Found',teams});
+    }
+    catch(err)
+    {
+        console.log(err);
+        return res.status(500).send({err, message: 'Error getting Team.'});
+    }
+}
