@@ -23,6 +23,7 @@ exports.createTeam = async (req, res)=>
         const params = req.body;
         const data =
         {
+            user: req.user.sub,
             name: params.name,
             teamPoints: 0,
             playedMatches: 0,
@@ -102,7 +103,7 @@ exports.getTeamsUser = async(req,res)=>
 {
     try
     {
-        const teams = await Team.find().lean();
+        const teams = await Team.find({user:req.user.sub}).lean();
         return res.send({message:'Teams Found',teams});
     }
     catch(err)
