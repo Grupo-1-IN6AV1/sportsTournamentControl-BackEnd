@@ -57,3 +57,41 @@ exports.createTeam = async (req, res)=>
         return res.status(500).send({err, message: 'Error created Team.'});
     }
 }
+
+
+//ACTUALIZAR || Editar Equipo//
+exports.updateTeam = async(req, res)=>
+{
+    try
+    {
+        const teamId = req.params.id;
+        const params = req.body;
+
+        const teamExist = await Team.findOne({_id: teamId});
+        if(!teamExist)
+            return res.send({message: 'Team not found'});
+
+        //- Verificar que no se duplique con otro Equipo.//
+        const notDuplicateTeam = await Team.findOne({name:params.name});
+        if(notDuplicateTeam && notDuplicateTeam.name != teamExist.name)
+            return res.send({message: 'Team is already exist.'});
+
+        //- Actualizar el Equipo.//
+        const teamUpdated = await Team.findOneAndUpdate
+        (
+            {_id: teamId},
+            params,
+            {new: true}
+        ).lean();
+
+        //- Verificar Actualización.//
+        if(!teamUpdated)
+            return res.send({message: ' Team not updated.'});
+        return res.send({message: 'Team updated successfully.', teamUpdated});
+    }
+    catch(err)
+    {
+        console.log(err);
+        return res.status(500).send({err, message: 'Error updating Team.'});
+    }
+}
