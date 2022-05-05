@@ -177,3 +177,28 @@ exports.deleteUser = async(req, res)=>{
         return res.status(500).send({err, message: 'Error removing account'});
     }
 }
+
+exports.getUser = async (req, res) => 
+{
+    try 
+    {
+        const userId = req.params.id;
+
+        const user = await User.findOne({ _id: userId});
+        if (!user) 
+        {
+            return res.status(401).send({ message: 'This user does not exist.' })
+        } 
+        else 
+        {
+            return res.send({message:'User Found:'}, user);
+        }
+    } 
+    catch (err) 
+    {
+        console.log(err)
+        return res.status(500).send({ message: 'Error getting User.' });
+    }
+};
+
+
