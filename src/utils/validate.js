@@ -71,3 +71,14 @@ exports.checkUpdateAdmin = async(user)=>{
         return true;
     }
 }
+
+exports.searchTournament = async(name)=>{
+    try{
+        const tournament = await Tournament.findOne({name: name});
+        if(!tournament) return false
+        return tournament;
+    }catch(err){
+        console.log(err);
+        return err;
+    }
+}
