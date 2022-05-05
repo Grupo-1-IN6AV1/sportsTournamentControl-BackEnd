@@ -195,7 +195,7 @@ exports.getUser = async (req, res) =>
     catch (err) 
     {
         console.log(err)
-        return res.status(500).send({ message: 'Error getting User.' });
+        return res.status(500).send({ message: 'Error getting User.', err});
     }
 };
 
