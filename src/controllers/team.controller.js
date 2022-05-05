@@ -112,3 +112,46 @@ exports.getTeamsUser = async(req,res)=>
         return res.status(500).send({err, message: 'Error getting Team.'});
     }
 }
+
+
+//LISTAR || Por Nombre de Equipo//
+exports.searchTeamsUser = async(req, res)=>
+{
+    try
+    {
+        const params = req.body;
+        const data =
+        {
+            name: params.name
+        }
+
+        const msg = validateData(data);
+
+        if(!msg)
+        {
+            const team = await Team.find
+            ({
+                $and:
+                [
+                    {name: {$regex: params.name, $options:'i'}},
+                    {user: req.user.sub}
+                ]
+                
+            });
+            
+            if(team.length!=0)
+                return res.send({message:'Teams Founds', team});
+            
+            return res.status(400).send({message: 'Teams Not Found.'});
+        }
+        else
+        {
+            return res.status(400).send(msg);
+        }
+    }
+    catch(err)
+    {
+        console.log(err);
+        return res.status(500).send({message: 'Error searching Users.', err});
+    }
+}
