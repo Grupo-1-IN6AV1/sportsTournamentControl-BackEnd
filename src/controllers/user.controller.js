@@ -187,7 +187,7 @@ exports.getUser = async (req, res) =>
         const user = await User.findOne({ _id: userId});
         if (!user) 
         {
-            return res.status(401).send({ message: 'This user does not exist.' })
+            return res.status(400).send({ message: 'This user does not exist.' })
         } 
         else 
         {
@@ -200,5 +200,34 @@ exports.getUser = async (req, res) =>
         return res.status(500).send({ message: 'Error getting User.' });
     }
 };
+
+exports.searchUser = async (req, res)=>
+{
+    try
+    {
+        const params = req.body;
+        const data =
+        {
+            username: params.username
+        }
+
+        const msg = validateData(data);
+
+        if(!msg)
+        {
+            const user = await User.find({username: {$regex: params.username, $options:i}});
+            return res.send({message:'User Founds', user});
+        }
+        else
+        {
+            return res.status(400).send({message:'Users not founds.'})
+        }
+    }
+    catch(err)
+    {
+        console.log(err);
+        return res.status(500).send({message: 'Error searching Users.'})
+    }
+}
 
 
