@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 
 const teamSchema = mongoose.Schema({
+    user: {type: mongoose.Schema.ObjectId, ref:'User'},
     name: String,
     description: String,
     country: String,
