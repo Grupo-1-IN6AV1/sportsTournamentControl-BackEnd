@@ -4,10 +4,12 @@ const bcrypt = require('bcrypt-nodejs');
 const User = require('../models/user.model');
 const Tournament = require('../models/tournament.model');
 
-exports.validateData = (data) =>{
+exports.validateData = (data) =>
+{
     let keys = Object.keys(data), msg = '';
 
-    for(let key of keys){
+    for(let key of keys)
+    {
         if(data[key] !== null && data[key] !== undefined && data[key] !== '') continue;
         msg += `The params ${key} es obligatorio\n`
     }

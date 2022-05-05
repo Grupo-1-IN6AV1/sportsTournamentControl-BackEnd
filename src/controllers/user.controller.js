@@ -7,9 +7,8 @@ const {validateData, encrypt, alreadyUser,
 const jwt = require('../services/jwt');
 
 //FUNCIONES PÚBLICAS
-
 exports.userTest = async (req, res)=>{
-    await res.send({message: 'Controller run'})
+    await res.send({message: 'User Test is running.'})
 }
 
 exports.register = async(req, res)=>{
@@ -55,7 +54,7 @@ exports.login = async(req, res)=>{
             let token = await jwt.createToken(already);
             delete already.password;
 
-            return res.send({token, message: 'Login successfuly', already});
+            return res.send({message: 'Login successfuly', already, token});
         }else return res.status(401).send({message: 'Invalid credentials'});
     }catch(err){
         console.log(err);
@@ -120,13 +119,14 @@ exports.saveUser = async(req, res)=>{
         const userExist = await alreadyUser(params.username);
         if(userExist) return res.send({message: 'Username already in use'});
         if(params.role != 'ADMIN' && params.role != 'CLIENT') return res.status(400).send({message: 'Invalid role'});
+        
         data.surname = params.surname;
-        data.phone = params.phoe;
+        data.phone = params.phone;
         data.password = await encrypt(params.password);
 
         const user = new User(data);
         await user.save();
-        return res.send({message: 'User saved successfully'});
+        return res.send({message: 'User saved successfully', user});
     }catch(err){
         console.log(err);
         return res.status(500).send({err, message: 'Error saving user'});
@@ -156,23 +156,21 @@ exports.updateUser = async(req, res)=>{
     }
 }
 
-exports.deleteUser = async(req, res)=>{
-    try{
-            //Captuar el id
-            //Verificar que exista el usuario
-            //Verificar que el usuario a eliminar no sea ADMIN
-            //Eliminar
-            //Verificar que se haya eliminado
-
+exports.deleteUser = async(req, res)=>
+{
+    try
+    {
         const userId = req.params.id;
 
         const userExist = await User.findOne({_id: userId});
         if(!userExist) return res.send({message: 'User not found'});
-        if(userExist.role === 'ADMIN') return res.send({message: ' Could not detel user with ADMIN role'});
+        if(userExist.role === 'ADMIN') return res.send({message: ' Could not deleted User with ADMIN role'});
         const userDeleted = await User.findOneAndDelete({_id: userId});
         if(!userDeleted) return res.send({message: 'User not deleted'});
         return res.send({message: 'Account deleted successfully', userDeleted})
-    }catch(err){
+    }
+    catch(err)
+    {
         console.log(err);
         return res.status(500).send({err, message: 'Error removing account'});
     }
@@ -191,7 +189,7 @@ exports.getUser = async (req, res) =>
         } 
         else 
         {
-            return res.send({message:'User Found:'}, user);
+            return res.send({message:'User Found:', user});
         }
     } 
     catch (err) 
@@ -215,18 +213,18 @@ exports.searchUser = async (req, res)=>
 
         if(!msg)
         {
-            const user = await User.find({username: {$regex: params.username, $options:i}});
+            const user = await User.find({username: {$regex: params.username, $options:'i'}});
             return res.send({message:'User Founds', user});
         }
         else
         {
-            return res.status(400).send({message:'Users not founds.'})
+            return res.status(400).send(msg);
         }
     }
     catch(err)
     {
         console.log(err);
-        return res.status(500).send({message: 'Error searching Users.'})
+        return res.status(500).send({message: 'Error searching Users.', err});
     }
 }
 
