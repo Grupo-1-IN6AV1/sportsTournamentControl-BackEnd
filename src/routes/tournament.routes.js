@@ -1,6 +1,6 @@
 'use strict'
 
-const tournamentController = require('../controllers/torneo.controller');
+const tournamentController = require('../controllers/tournament.controller');
 const mdAuth = require('../services/authenticated');
 const express = require('express');
 const api = express.Router();

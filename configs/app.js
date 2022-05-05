@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cors = require ('cors');
 const userRoutes = require('../src/routes/user.routes');
+const tournamentRoutes = require('../src/routes/tournament.routes');
 
 
 //APP -> Servidor HTTP (Express)
@@ -21,7 +22,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/user', userRoutes);
-app.use('/torneo', torneoRoutes);
+app.use('/tournament', tournamentRoutes);
 
 
 //Exportación//

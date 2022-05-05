@@ -1,7 +1,7 @@
 'use strict'
 
 const {validateData, searchTournament} = require('../utils/validate');
-const Tournament = require('../models/torneo.model');
+const Tournament = require('../models/tournament.model');
 
 exports.tournamentTest = async (req, res)=>{
     await res.send({message: 'Controller torneo test run'});

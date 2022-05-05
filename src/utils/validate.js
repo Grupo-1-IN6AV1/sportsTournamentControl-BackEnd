@@ -2,6 +2,7 @@
 
 const bcrypt = require('bcrypt-nodejs');
 const User = require('../models/user.model');
+const Tournament = require('../models/tournament.model');
 
 exports.validateData = (data) =>{
     let keys = Object.keys(data), msg = '';
