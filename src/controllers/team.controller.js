@@ -68,19 +68,39 @@ exports.updateTeam = async(req, res)=>
         const teamId = req.params.id;
         const params = req.body;
 
-        const teamExist = await Team.findOne({_id: teamId});
+        const teamExist = await Team.findOne
+        ({
+            $and:
+            [
+                {_id: teamId},
+                {user: req.user.sub}
+            ]
+        });
         if(!teamExist)
             return res.send({message: 'Team not found'});
 
         //- Verificar que no se duplique con otro Equipo.//
-        const notDuplicateTeam = await Team.findOne({name:params.name});
+        const notDuplicateTeam = await Team.findOne
+        ({
+            $and:
+                [
+                    {user: req.user.sub},
+                    {name: params.name}
+                ]
+        });
         if(notDuplicateTeam && notDuplicateTeam.name != teamExist.name)
             return res.send({message: 'Team is already exist.'});
 
         //- Actualizar el Equipo.//
         const teamUpdated = await Team.findOneAndUpdate
         (
-            {_id: teamId},
+            {
+                $and:
+                [
+                    {_id: teamId},
+                    {user: req.user.sub}
+                ]
+            },
             params,
             {new: true}
         ).lean();
@@ -94,6 +114,35 @@ exports.updateTeam = async(req, res)=>
     {
         console.log(err);
         return res.status(500).send({err, message: 'Error updating Team.'});
+    }
+}
+
+
+//DELETE || Eliminar Equipo
+exports.deleteTeam = async(req, res)=>
+{
+    try
+    {
+        //Capturar el ID del Equipo.//
+        const teamId = req.params.id;
+        const teamDeleted = await Team.findOneAndDelete
+        ({
+            $and:
+            [
+                {_id: teamId},
+                {user: req.user.sub}
+            ]
+        });
+        
+        if(!teamDeleted) 
+            return res.status(500).send({message: 'Team not found or already delete.'});
+        
+        return res.send({ message: 'Team Deleted.', teamDeleted});
+    }
+    catch(err)
+    {
+        console.log(err);
+        return res.status(500).send({message: 'Error deleting Team.', err});
     }
 }
 
@@ -138,7 +187,7 @@ exports.searchTeamsUser = async(req, res)=>
                 ]
                 
             });
-            
+
             if(team.length!=0)
                 return res.send({message:'Teams Founds', team});
             

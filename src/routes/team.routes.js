@@ -10,5 +10,6 @@ api.post('/createTeam', mdAuth.ensureAuth, teamController.createTeam);
 api.put('/updateTeam/:id', mdAuth.ensureAuth, teamController.updateTeam);
 api.get('/getTeamsUser', mdAuth.ensureAuth, teamController.getTeamsUser);
 api.post('/searchTeamsUser', mdAuth.ensureAuth, teamController.searchTeamsUser);
+api.delete('/deleteTeam/:id', mdAuth.ensureAuth, teamController.deleteTeam);
 
 module.exports = api;
