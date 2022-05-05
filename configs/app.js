@@ -6,7 +6,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cors = require ('cors');
+
+
+//Importación de las Rutas//
 const userRoutes = require('../src/routes/user.routes');
+const teamRoutes = require('../src/routes/team.routes');
 const tournamentRoutes = require('../src/routes/tournament.routes');
 
 
@@ -23,6 +27,7 @@ app.use(cors());
 
 app.use('/user', userRoutes);
 app.use('/tournament', tournamentRoutes);
+app.use('/team', teamRoutes);
 
 
 //Exportación//
