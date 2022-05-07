@@ -163,6 +163,34 @@ exports.getTeamsUser = async(req,res)=>
 }
 
 
+//LISTAR || Ver Equipo Específico de Usuario//
+exports.getTeamUser = async(req,res)=>
+{
+    try
+    {
+        const teamId = req.params.id;
+
+        const team = await Team.findOne(
+        {$and:
+            [
+                {_id: teamId},
+                {user: req.user.sub}
+            ]
+        }).lean();
+
+        if(team)
+        return res.send({message:'Team Found',team});
+
+        return res.status(401).send({message:'Team Not Found'});
+    }
+    catch(err)
+    {
+        console.log(err);
+        return res.status(500).send({err, message: 'Error getting Team.'});
+    }
+}
+
+
 //LISTAR || Por Nombre de Equipo//
 exports.searchTeamsUser = async(req, res)=>
 {
