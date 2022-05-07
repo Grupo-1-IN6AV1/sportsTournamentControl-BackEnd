@@ -41,7 +41,14 @@ exports.createTeam = async (req, res)=>
             return res.status(400).send(msg);
         
         //- Verficar que no exista el equipo.//
-        let teamExist = await Team.findOne({name:params.name});
+        let teamExist = await Team.findOne(
+        {
+            $and:
+            [
+                {name: params.name},
+                {user: req.user.sub}
+            ]
+        });
         if(teamExist)
         return res.send({message: 'Team is already created.'});
 
