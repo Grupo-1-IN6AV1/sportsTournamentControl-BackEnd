@@ -244,7 +244,7 @@ exports.getTournamentsByAdmin = async (req,res) =>
 }
 
 
-//Registrar || Agregar equipos en torneos//
+//Create || Agregar equipos en torneos//
 exports.addTeamTournament = async (req, res) => {
     try 
     {
@@ -253,13 +253,13 @@ exports.addTeamTournament = async (req, res) => {
         const tournamentId = req.params.id;
         const teamID = params.team
 
-        const tournamentExist = await Tournament.findOne({$and:[{ _id: teamID },{ user: user }]});
+        const tournamentExist = await Tournament.findOne({$and:[{ _id: tournamentId },{ user: user }]});
 
         //Verificar que Exista el torneo//
         if (!tournamentExist)
             return res.status(401).send({ message: 'Tournament not Found.' })
 
-        const msg = validateData(params);
+        const msg = validateData(teamID);
         if (msg)
             return res.status(400).send(msg);
 
@@ -270,8 +270,6 @@ exports.addTeamTournament = async (req, res) => {
 
         //Validar que ese equipo ya exista en el torneo//
         //Busca el Equipo por ID y Usuario//
-        if (!teamExist)
-            return res.send({ message: 'Team not Found.' });
 
         //Verificar que no se repitan los Equipos//
         for(var key=0; key<tournamentExist.teams.length; key++)
@@ -297,45 +295,51 @@ exports.addTeamTournament = async (req, res) => {
     }
 }
 
-exports.removeTeamToTournament = async(req,res)=>{
-    try{
+
+//DELETE || Eliminar equipos en torneos//
+exports.deleteTeamTournament = async (req, res) => {
+    try 
+    {
         const params = req.body;
-        const userId = req.user.sub;
+        const user = req.user.sub;
         const tournamentId = req.params.id;
-        const tournamentExist = await Tournament.findOne({
-            $and:
-            [
-                {user: userId},
-                {_id: tournamentId}
-            ]
-        });
-        if(!tournamentExist) return res.status(401).send({message: 'Tournament not found'});
-        const teamExist = await Team.findOne({
-            $and:
-            [
-                {user: userId},
-                {_id: params.teamId}
-            ]
-        });
-        if(!teamExist)  return res.status(401).send({message: 'Team not found'});
-        const teamAlready = await Tournament.findOne({
-            $and:
-            [
-                {_id: tournamentId},
-                {teams: params.teamId}
-            ]
-        });
-        if(!teamAlready) return res.status(401).send({message: 'Team does not in Tournament'});
-        for(let team of tournamentExist.teams){
-            //console.log(tournamentExist.teams._id)
-            if(team._id != params.teamId) continue;
-            const removeTeam = await Tournament.findOneAndUpdate({_id: tournamentId}, 
-                {$pull: {'teams':  team._id}}, {new:true});
-            if(!removeTeam) return res.status(401).send({message: 'Team can not remove of tournament'});
-            return res.send({message: 'Team deleted of Tournament', removeTeam}); 
+        const teamID = params.team
+
+        const tournamentExist = await Tournament.findOne({$and:[{ _id: tournamentId },{ user: user }]});
+
+        //Verificar que Exista el torneo//
+        if (!tournamentExist)
+            return res.status(401).send({ message: 'Tournament not Found.' })
+
+        const msg = validateData(teamID);
+        if (msg)
+            return res.status(400).send(msg);
+
+        //Busca el Equipo por ID y Usuario//
+        const teamExist = await Team.findOne({$and:[{ _id: teamID },{ user: user }]}).lean();
+        if (!teamExist)
+            return res.send({ message: 'Team not Found.' });
+
+        //Validar que ese equipo ya exista en el torneo//
+        //Busca el Equipo por ID y Usuario//
+
+        //Verificar que no se repitan los Equipos//
+        for(var key=0; key<tournamentExist.teams.length; key++)
+        {
+            const checkTeam = tournamentExist.teams[key].team;
+            if(checkTeam != teamID)continue;
+                const removeTeam = await Tournament.findOneAndUpdate({$and:[{_id: tournamentId},{user: user}]}, 
+                    { $pull: { 'teams': { 'team': teamID } } }, {new:true});
+                if(!removeTeam) return res.status(401).send({message: 'Team can not remove of tournament'});
+                return res.send({message: 'Team deleted of Tournament', removeTeam});
         }
-    }catch(err){
+        
+        return res.status(401).send({message:'Team Not Found in this Tournament.'})
+         
+    } 
+    catch (err) 
+    {
         console.log(err);
-        return res.status(500).send({err, message: 'Error adding Tournament'});
+        return err;
     }
 }
