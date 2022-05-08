@@ -1,6 +1,6 @@
 'use strict'
 
-const {validateData, searchTournament} = require('../utils/validate');
+const {validateData} = require('../utils/validate');
 const Tournament = require('../models/tournament.model');
 const User = require('../models/user.model');
 const Team = require('../models/team.model');
@@ -14,7 +14,8 @@ exports.createTournament = async(req, res)=>{
     try{
         const params = req.body;
         const userId = req.user.sub;
-        const data = {
+        const data = 
+        {
             name: params.name,
             description: params.description,
             user: userId,
@@ -22,8 +23,19 @@ exports.createTournament = async(req, res)=>{
         };
         const msg = validateData(data);
         if(msg) return res.status(400).send(msg);
-        const alreadyTournament = await searchTournament(params.name);
-        if(alreadyTournament) return res.send({message: 'Tournament is already created'});
+        
+        const tournamentExist = await findOne(
+        {
+            $and:
+            [
+                    {user: userId},
+                    {name: data.name}
+            ]
+        });
+        
+        if(tournamentExist)
+            return res.send({message:'This tournament already created.'})
+            
         const tournament = new Tournament(data);
         await tournament.save();
         return res.send({message: 'Tournament created successfully', tournament});
