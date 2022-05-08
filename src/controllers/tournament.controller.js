@@ -23,7 +23,7 @@ exports.createTournament = async(req, res)=>
             user: userId,
         };
         const msg = validateData(data);
-        if(msg) return res.status(400).send(msg);
+            if(msg) return res.status(400).send(msg);
         
         const tournamentExist = await Tournament.findOne(
         {
@@ -96,7 +96,17 @@ exports.updateTournament = async(req, res)=>{
         const tournamentId = req.params.id;
         const params = req.body;
         const userId = req.user.sub;
-        if(Object.entries(params).length === 0) return res.status(400).send({message: 'Empty parameters'});
+        
+        const data =
+        {
+            name: params.name,
+            description: params.description
+        }
+
+        const msg = validateData(data);
+        if (msg)
+            return res.status(400).send(msg);
+
         const tournamentExist = await Tournament.findOne({
             $and:
                 [
@@ -104,17 +114,33 @@ exports.updateTournament = async(req, res)=>{
                     {_id: tournamentId}
                 ]
         });
-        if(!tournamentExist) return res.send({message: 'Tournament not found'});
+
+        if(!tournamentExist)
+            return res.send({message: 'Tournament not found'});
+        
         const alreadyTournament = await Tournament.findOne({
             $and:
                 [
                     {user: userId},
                     {name: params.name}
                 ]
-        });;
-        if(alreadyTournament && tournamentExist.name != params.name) return res.send({message: 'Tournament already taken'});
-        const updateTournament = await Tournament.findOneAndUpdate({_id: tournamentId}, params, {new:true});
-        if(!updateTournament) return res.status(401).send({message: 'Tournament not found'});
+        });
+
+        if(alreadyTournament && alreadyTournament.name != tournamentExist.name) 
+            return res.send({message: 'Tournament already taken'});
+        const updateTournament = await Tournament.findOneAndUpdate(
+            {$and:
+                [
+                    {_id: tournamentId},
+                    {user: userId}         
+                ]
+            }, 
+            params, 
+            {new:true});
+            
+        if(!updateTournament)
+            return res.status(401).send({message: 'Tournament not Updated'});
+
         return res.send({message: 'Tournament updated successfully', updateTournament});
 
     }catch(err){
