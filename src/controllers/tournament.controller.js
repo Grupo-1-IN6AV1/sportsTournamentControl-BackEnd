@@ -296,6 +296,57 @@ exports.addTeamTournament = async (req, res) => {
 }
 
 
+//Registrar || Agregar Jornadas en el Torneo//
+exports.addJourneyTournament = async (req, res) => {
+    try {
+        const params = req.body;
+        const user = req.user.sub;
+        const tournamentId = req.params.id;
+        const JourneyID = params.journey
+
+        const tournamentExist = await Tournament.findOne({ _id:tournamentId });
+
+        //Verificar que Exista la el torneo//
+        if (!tournamentExist)
+            return res.status(401).send({ message: 'Tournament not Found.' })
+
+        const msg = validateData(params);
+        if (msg)
+            return res.status(400).send(msg);
+
+        //Busca la jornada por ID y Usuario//
+        const journeyExist = await Journey.findOne({$and:[{ _id: JourneyID },{ user: user }]}).lean();
+        if (!journeyExist)
+            return res.send({ message: 'Journey not Found.' });
+
+        //Verificar que no se repitan la jornada//
+        for(var key=0; key<tournamentExist.journeys.length; key++)
+          {
+              const checkJourney = tournamentExist.journeys[key].journey;
+              if(checkJourney != JourneyID)continue;
+                  return res.send({message:'You already have this joueney in the Tournament.'});
+          }
+
+        //Validar la cantidad máxima de jornadas//
+        const totalTeams = tournamentExist.teams.length;
+        const totalJourneys = tournamentExist.journeys.length;
+        if (totalJourneys >= (totalTeams - 1))
+            return res.status(401).send({ message: 'Maximum number of journeys reached.' });
+
+
+        //Agrega las jornadas al torneo//
+        const newTeamTournament = await Tournament.findOneAndUpdate({ _id: tournamentId }, { $push: { journeys:{ journey: JourneyID }} },{ new: true });
+        return res.send({ message: 'Added New Team to Tournament', newTeamTournament });
+        
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+}
+
+
+
+
 //DELETE || Eliminar equipos en torneos//
 exports.deleteTeamTournament = async (req, res) => {
     try 
