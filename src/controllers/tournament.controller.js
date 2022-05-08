@@ -246,15 +246,16 @@ exports.getTournamentsByAdmin = async (req,res) =>
 
 //Registrar || Agregar equipos en torneos//
 exports.addTeamTournament = async (req, res) => {
-    try {
+    try 
+    {
         const params = req.body;
         const user = req.user.sub;
         const tournamentId = req.params.id;
         const teamID = params.team
 
-        const tournamentExist = await Tournament.findOne({ _id:tournamentId });
+        const tournamentExist = await Tournament.findOne({$and:[{ _id: teamID },{ user: user }]});
 
-        //Verificar que Exista la el torneo//
+        //Verificar que Exista el torneo//
         if (!tournamentExist)
             return res.status(401).send({ message: 'Tournament not Found.' })
 
@@ -268,8 +269,17 @@ exports.addTeamTournament = async (req, res) => {
             return res.send({ message: 'Team not Found.' });
 
         //Validar que ese equipo ya exista en el torneo//
-        const teamExiste = await tournamentExist.teams.id(teamID);
-     
+        //Busca el Equipo por ID y Usuario//
+        if (!teamExist)
+            return res.send({ message: 'Team not Found.' });
+
+        //Verificar que no se repitan los Equipos//
+        for(var key=0; key<tournamentExist.teams.length; key++)
+        {
+            const checkTeam = tournamentExist.teams[key].team;
+            if(checkTeam != teamID)continue;
+                return res.send({message:'You already have this team in the Tournament.'});
+        }
 
         //Validar la cantidad máxima de equipos//
         const countTeams = tournamentExist.teams.length;
@@ -277,9 +287,10 @@ exports.addTeamTournament = async (req, res) => {
             //Agrega el Primer Partido a la Jornada//
             const newTeamTournament = await Tournament.findOneAndUpdate({ _id: tournamentId }, { $push: { teams:{ team:teamID }} },{ new: true });
             return res.send({ message: 'Added New Team to Tournament', newTeamTournament });
-        }else return res.send({message: 'Cannot add to team because maximum number of added teams reached'})
+        }
 
-        
+        return res.send({message: 'Cannot add to team because maximum number of added teams reached'})
+
     } catch (err) {
         console.log(err);
         return err;
