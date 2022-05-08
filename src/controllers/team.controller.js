@@ -34,8 +34,10 @@ exports.createTeam = async (req, res) =>
         const data = 
         {
             tournament: params.tournament,
+            user: user,
             name: params.name,
             country: params.country,
+            description: params.description,
             proGoals: 0,
             againGoals: 0,
             differenceGoals: 0,
