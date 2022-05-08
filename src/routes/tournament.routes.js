@@ -14,6 +14,7 @@ api.put('/updateTournamentByAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tou
 api.delete('/deleteTournament/:id', mdAuth.ensureAuth, tournamentController.deleteTournament);
 api.delete('/deleteTournamentByAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.deleteTournamentByAdmin);
 api.post('/addTeamTournament/:id', mdAuth.ensureAuth, tournamentController.addTeamTournament);
+api.post('/addJourneyTournament/:id', mdAuth.ensureAuth, tournamentController.addJourneyTournament);
 api.post('/deleteTeamTournament/:id', mdAuth.ensureAuth, tournamentController.deleteTeamTournament);
 api.get('/getTournamentsByAdmin', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.getTournamentsByAdmin)
 
