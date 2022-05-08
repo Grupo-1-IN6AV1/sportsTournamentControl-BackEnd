@@ -269,20 +269,22 @@ exports.addTeamTournament = async (req, res) => {
 
         //Validar que ese equipo ya exista en el torneo//
         const teamExiste = await tournamentExist.teams.id(teamID);
-       
+     
+
+        //Validar la cantidad máxima de equipos//
+        const countTeams = tournamentExist.teams.length;
+        if(countTeams < 10 ){
+            //Agrega el Primer Partido a la Jornada//
+            const newTeamTournament = await Tournament.findOneAndUpdate({ _id: tournamentId }, { $push: { teams:{ team:teamID }} },{ new: true });
+            return res.send({ message: 'Added New Team to Tournament', newTeamTournament });
+        }else return res.send({message: 'Cannot add to team because maximum number of added teams reached'})
+
         
-        if(teamExiste) return res.send({message: 'Team already exist in tournament'})
-      
-         //Agrega el Primer Partido a la Jornada//
-        const newTeamTournament = await Tournament.findOneAndUpdate({ _id: tournamentId }, { $push: { teams:{ team:teamID }} },{ new: true });
-        return res.send({ message: 'Added New Team to Tournament', newTeamTournament });
-       
     } catch (err) {
         console.log(err);
         return err;
     }
 }
-
 
 exports.removeTeamToTournament = async(req,res)=>{
     try{
