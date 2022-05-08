@@ -345,8 +345,6 @@ exports.addJourneyTournament = async (req, res) => {
 }
 
 
-
-
 //DELETE || Eliminar equipos en torneos//
 exports.deleteTeamTournament = async (req, res) => {
     try 
