@@ -225,6 +225,25 @@ exports.deleteTournamentByAdmin = async(req, res)=>{
     }
 }
 
+
+exports.getTournamentsByAdmin = async (req,res) =>
+{
+    try
+    {
+        const tournaments = await Tournament.find().lean();
+        if(tournaments.length == 0) 
+            return res.send({message: 'Tournaments not found'});
+
+        return res.send({tournaments});
+    }
+    catch(err)
+    {
+        console.log(err);
+        return res.status(500).send({err, message: 'Error getting Tournaments'});
+    }
+}
+
+
 exports.addTeamIntoTournamnet = async(req, res)=>{
     try{
         const params = req.body;

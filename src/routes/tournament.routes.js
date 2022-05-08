@@ -15,5 +15,6 @@ api.delete('/deleteTournament/:id', mdAuth.ensureAuth, tournamentController.dele
 api.delete('/deleteTournamentByAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.deleteTournamentByAdmin);
 api.post('/addTeamtoTournament/:id', mdAuth.ensureAuth, tournamentController.addTeamIntoTournamnet);
 api.put('/removeTeamToTournament/:id', mdAuth.ensureAuth, tournamentController.removeTeamToTournament);
+api.get('/getTournamentsByAdmin', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.getTournamentsByAdmin)
 
 module.exports = api;
