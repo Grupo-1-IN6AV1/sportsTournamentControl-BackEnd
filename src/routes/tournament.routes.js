@@ -13,7 +13,7 @@ api.put('/updateTournament/:id', mdAuth.ensureAuth, tournamentController.updateT
 api.put('/updateTournamentByAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.updateTournamentByAdmin);
 api.delete('/deleteTournament/:id', mdAuth.ensureAuth, tournamentController.deleteTournament);
 api.delete('/deleteTournamentByAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.deleteTournamentByAdmin);
-api.post('/addTeamtoTournament/:id', mdAuth.ensureAuth, tournamentController.addTeamIntoTournamnet);
+api.post('/addTeamTournament/:id', mdAuth.ensureAuth, tournamentController.addTeamTournament);
 api.put('/removeTeamToTournament/:id', mdAuth.ensureAuth, tournamentController.removeTeamToTournament);
 api.get('/getTournamentsByAdmin', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.getTournamentsByAdmin)
 
