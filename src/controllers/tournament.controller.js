@@ -5,8 +5,9 @@ const Tournament = require('../models/tournament.model');
 const User = require('../models/user.model');
 const Team = require('../models/team.model');
 
-exports.tournamentTest = async (req, res)=>{
-    await res.send({message: 'Controller torneo test run'});
+exports.tournamentTest = (req, res)=>
+{
+    return res.send({message: 'Team test is running.'});
 }
 
 exports.createTournament = async(req, res)=>{
