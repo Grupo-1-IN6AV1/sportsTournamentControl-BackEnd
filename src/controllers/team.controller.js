@@ -142,7 +142,7 @@ exports.deleteTeam = async(req, res)=>
         });
         
         if(!teamDeleted) 
-            return res.status(500).send({message: 'Team not found or already delete.'});
+            return res.status(401).send({message: 'Team not found or already delete.'});
         
         return res.send({ message: 'Team Deleted.', teamDeleted});
     }

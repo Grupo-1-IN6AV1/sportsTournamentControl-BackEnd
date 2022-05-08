@@ -149,6 +149,43 @@ exports.updateTournament = async(req, res)=>{
     }
 }
 
+
+exports.deleteTournament = async(req, res)=>
+{
+    try
+    {
+        const tournamentId = req.params.id;
+        const userId = req.user.sub;
+        const tournamentExist = await Tournament.findOne({
+            $and:
+                [
+                    {user: userId},
+                    {_id: tournamentId}
+                ]
+        });
+        if(!tournamentExist) 
+            return res.send({message: 'Tournament not found'});
+        const deleteTournament = await Tournament.findOneAndDelete({
+            $and:
+                [
+                    {user: userId},
+                    {_id: tournamentId}
+                ]
+        });
+
+        if(!deleteTournament) 
+            return res.status(401).send({message: 'Tournament not found or already delete.'});
+        return res.send({message: 'Tournament deleted successfully', deleteTournament});
+    }
+    catch(err)
+    {
+        console.log(err);
+        return res.status(500).send({err, message: 'Error deleting Tournament'});
+    }
+}
+
+
+
 exports.updateTournamentByAdmin = async(req, res)=>{
     try{
         const tournamentId = req.params.id;
@@ -170,26 +207,6 @@ exports.updateTournamentByAdmin = async(req, res)=>{
     }
 }
 
-exports.deleteTournament = async(req, res)=>{
-    try{
-        const tournamentId = req.params.id;
-        const userId = req.user.sub;
-        const tournamentExist = await Tournament.findOne({
-            $and:
-                [
-                    {user: userId},
-                    {_id: tournamentId}
-                ]
-        });
-        if(!tournamentExist) return res.send({message: 'Tournament not found'});
-        const deleteTournament = await Tournament.findOneAndDelete({_id: tournamentId});
-        if(!deleteTournament) return res.status(401).send({message: 'Tournament not found'});
-        return res.send({message: 'Tournament deleted successfully', deleteTournament});
-    }catch(err){
-        console.log(err);
-        return res.status(500).send({err, message: 'Error deleting Tournament'});
-    }
-}
 
 exports.deleteTournamentByAdmin = async(req, res)=>{
     try{
