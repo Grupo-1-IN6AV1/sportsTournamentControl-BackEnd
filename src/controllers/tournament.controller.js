@@ -226,7 +226,6 @@ exports.deleteTournamentByAdmin = async(req, res)=>{
     }
 }
 
-
 exports.getTournamentsByAdmin = async (req,res) =>
 {
     try
@@ -245,200 +244,21 @@ exports.getTournamentsByAdmin = async (req,res) =>
 }
 
 
-//Create || Agregar equipos en torneos//
-exports.addTeamTournament = async (req, res) => {
-    try 
+exports.getTournamentByAdmin =  async(req, res)=>
+{
+    try
     {
-        const params = req.body;
-        const user = req.user.sub;
         const tournamentId = req.params.id;
-        const teamID = params.team
+        const tournament = await Tournament.findOne(
+        { _id: tournamentId}).lean();
+        if(!tournament) 
+        return res.send({message: 'Tournament Not Found'});
 
-        const tournamentExist = await Tournament.findOne({$and:[{ _id: tournamentId },{ user: user }]});
-
-        //Verificar que Exista el torneo//
-        if (!tournamentExist)
-            return res.status(401).send({ message: 'Tournament not Found.' })
-
-        const msg = validateData(teamID);
-        if (msg)
-            return res.status(400).send(msg);
-
-        //Busca el Equipo por ID y Usuario//
-        const teamExist = await Team.findOne({$and:[{ _id: teamID },{ user: user }]}).lean();
-        if (!teamExist)
-            return res.send({ message: 'Team not Found.' });
-
-        //Validar que ese equipo ya exista en el torneo//
-        //Busca el Equipo por ID y Usuario//
-
-        //Verificar que no se repitan los Equipos//
-        for(var key=0; key<tournamentExist.teams.length; key++)
-        {
-            const checkTeam = tournamentExist.teams[key].team;
-            if(checkTeam != teamID)continue;
-                return res.send({message:'You already have this team in the Tournament.'});
-        }
-
-        //Validar la cantidad máxima de equipos//
-        const countTeams = tournamentExist.teams.length;
-        if(countTeams < 10 ){
-            //Agrega el Primer Partido a la Jornada//
-            const newTeamTournament = await Tournament.findOneAndUpdate({ _id: tournamentId }, { $push: { teams:{ team:teamID }} },{ new: true });
-            return res.send({ message: 'Added New Team to Tournament', newTeamTournament });
-        }
-
-        return res.send({message: 'Cannot add to team because maximum number of added teams reached'})
-
-    } catch (err) {
-        console.log(err);
-        return err;
+        return res.send({message:'Tournament Found:', tournament});
     }
-}
-
-
-//Registrar || Agregar Jornadas en el Torneo//
-exports.addJourneyTournament = async (req, res) => {
-    try {
-        const params = req.body;
-        const user = req.user.sub;
-        const tournamentId = req.params.id;
-        const JourneyID = params.journey
-
-        const tournamentExist = await Tournament.findOne({ _id:tournamentId });
-
-        //Verificar que Exista la el torneo//
-        if (!tournamentExist)
-            return res.status(401).send({ message: 'Tournament not Found.' })
-
-        const msg = validateData(params);
-        if (msg)
-            return res.status(400).send(msg);
-
-        //Busca la jornada por ID y Usuario//
-        const journeyExist = await Journey.findOne({$and:[{ _id: JourneyID },{ user: user }]}).lean();
-        if (!journeyExist)
-            return res.send({ message: 'Journey not Found.' });
-
-        //Verificar que no se repitan la jornada//
-        for(var key=0; key<tournamentExist.journeys.length; key++)
-          {
-              const checkJourney = tournamentExist.journeys[key].journey;
-              if(checkJourney != JourneyID)continue;
-                  return res.send({message:'You already have this joueney in the Tournament.'});
-          }
-
-        //Validar la cantidad máxima de jornadas//
-        const totalTeams = tournamentExist.teams.length;
-        const totalJourneys = tournamentExist.journeys.length;
-        if (totalJourneys >= (totalTeams - 1))
-            return res.status(401).send({ message: 'Maximum number of journeys reached.' });
-
-
-        //Agrega las jornadas al torneo//
-        const newTeamTournament = await Tournament.findOneAndUpdate({ _id: tournamentId }, { $push: { journeys:{ journey: JourneyID }} },{ new: true });
-        return res.send({ message: 'Added New Team to Tournament', newTeamTournament });
-        
-    } catch (err) {
-        console.log(err);
-        return err;
-    }
-}
-
-
-//DELETE || Eliminar equipos en torneos//
-exports.deleteTeamTournament = async (req, res) => {
-    try 
-    {
-        const params = req.body;
-        const user = req.user.sub;
-        const tournamentId = req.params.id;
-        const teamID = params.team
-
-        const tournamentExist = await Tournament.findOne({$and:[{ _id: tournamentId },{ user: user }]});
-
-        //Verificar que Exista el torneo//
-        if (!tournamentExist)
-            return res.status(401).send({ message: 'Tournament not Found.' })
-
-        const msg = validateData(teamID);
-        if (msg)
-            return res.status(400).send(msg);
-
-        //Busca el Equipo por ID y Usuario//
-        const teamExist = await Team.findOne({$and:[{ _id: teamID },{ user: user }]}).lean();
-        if (!teamExist)
-            return res.send({ message: 'Team not Found.' });
-
-        //Validar que ese equipo ya exista en el torneo//
-        //Busca el Equipo por ID y Usuario//
-
-        //Verificar que no se repitan los Equipos//
-        for(var key=0; key<tournamentExist.teams.length; key++)
-        {
-            const checkTeam = tournamentExist.teams[key].team;
-            if(checkTeam != teamID)continue;
-                const removeTeam = await Tournament.findOneAndUpdate({$and:[{_id: tournamentId},{user: user}]}, 
-                    { $pull: { 'teams': { 'team': teamID } } }, {new:true});
-                if(!removeTeam) return res.status(401).send({message: 'Team can not remove of tournament'});
-                return res.send({message: 'Team deleted of Tournament', removeTeam});
-        }
-        
-        return res.status(401).send({message:'Team Not Found in this Tournament.'})
-         
-    } 
-    catch (err) 
+    catch(err)
     {
         console.log(err);
-        return err;
-    }
-}
-
-
-//DELETE || Eliminar jornadas en torneos//
-exports.deleteJourneyTournament = async (req, res) => {
-    try 
-    {
-        const params = req.body;
-        const user = req.user.sub;
-        const tournamentId = req.params.id;
-        const journeyId = params.journey
-
-        const tournamentExist = await Tournament.findOne({$and:[{ _id: tournamentId },{ user: user }]});
-
-        //Verificar que Exista el torneo//
-        if (!tournamentExist)
-            return res.status(401).send({ message: 'Tournament not Found.' })
-
-        const msg = validateData(journeyId);
-        if (msg)
-            return res.status(400).send(msg);
-
-        //Busca el Equipo por ID y Usuario//
-        const journeyExist = await Journey.findOne({$and:[{ _id: journeyId },{ user: user }]}).lean();
-        if (!journeyExist)
-            return res.send({ message: 'Journey not Found.' });
-
-        //Validar que ese equipo ya exista en el torneo//
-        //Busca el Equipo por ID y Usuario//
-
-        //Verificar que no se repitan los Equipos//
-        for(var key=0; key<tournamentExist.journeys.length; key++)
-        {
-            const checkJourney = tournamentExist.journeys[key].journey;
-            if(checkJourney != journeyId)continue;
-                const removeJourney = await Tournament.findOneAndUpdate({$and:[{_id: tournamentId},{user: user}]}, 
-                    { $pull: { 'journeys': { 'journey': journeyId } } }, {new:true});
-                if(!removeJourney) return res.status(401).send({message: 'Journey can not remove of tournament'});
-                return res.send({message: 'Journey deleted of Tournament', removeJourney});
-        }
-        
-        return res.status(401).send({message:'Journey Not Found in this Tournament.'})
-         
-    } 
-    catch (err) 
-    {
-        console.log(err);
-        return err;
+        return res.status(500).send({message: 'Error getting Tournament',err});
     }
 }
