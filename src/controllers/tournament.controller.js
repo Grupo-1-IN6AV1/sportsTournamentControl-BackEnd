@@ -244,45 +244,45 @@ exports.getTournamentsByAdmin = async (req,res) =>
 }
 
 
-exports.addTeamIntoTournamnet = async(req, res)=>{
-    try{
+//Registrar || Agregar equipos en torneos//
+exports.addTeamTournament = async (req, res) => {
+    try {
         const params = req.body;
-        const userId = req.user.sub;
+        const user = req.user.sub;
         const tournamentId = req.params.id;
-        const tournamentExist = await Tournament.findOne({
-            $and:
-            [
-                {user: userId},
-                {_id: tournamentId}
-            ]
-        });
-        if(!tournamentExist) return res.status(401).send({message: 'Tournament not found'});
-        if(Object.entries(params).length === 0) return res.status(400).send({message: 'Team is required'})
-        const teamExist = await Team.findOne({
-            $and:
-            [
-                {user: userId},
-                {_id: params.teamId}
-            ]
-        });
-        if(!teamExist)  return res.status(401).send({message: 'Team not found'});
-        const teamAlready = await Tournament.findOne({
-            $and:
-            [
-                {_id: tournamentId},
-                {teams: params.teamId}
-            ]
-        });
-        if(teamAlready) return res.status(401).send({message: 'Team is already in the tournament'});
-        const newTeam = await Tournament.findOneAndUpdate({_id: tournamentId}, {$push: {teams: params.teamId}}, 
-            {new: true});
-        if(!newTeam) return res.status(401).send({message: 'Can not save the team'});
-        return res.send({message: 'Team added successfully to tournament', newTeam});
-    }catch(err){
+        const teamID = params.team
+
+        const tournamentExist = await Tournament.findOne({ _id:tournamentId });
+
+        //Verificar que Exista la el torneo//
+        if (!tournamentExist)
+            return res.status(401).send({ message: 'Tournament not Found.' })
+
+        const msg = validateData(params);
+        if (msg)
+            return res.status(400).send(msg);
+
+        //Busca el Equipo por ID y Usuario//
+        const teamExist = await Team.findOne({$and:[{ _id: teamID },{ user: user }]}).lean();
+        if (!teamExist)
+            return res.send({ message: 'Team not Found.' });
+
+        //Validar que ese equipo ya exista en el torneo//
+        const teamExiste = await tournamentExist.teams.id(teamID);
+       
+        
+        if(teamExiste) return res.send({message: 'Team already exist in tournament'})
+      
+         //Agrega el Primer Partido a la Jornada//
+        const newTeamTournament = await Tournament.findOneAndUpdate({ _id: tournamentId }, { $push: { teams:{ team:teamID }} },{ new: true });
+        return res.send({ message: 'Added New Team to Tournament', newTeamTournament });
+       
+    } catch (err) {
         console.log(err);
-        return res.status(500).send({err, message: 'Error adding Tournament'});
+        return err;
     }
 }
+
 
 exports.removeTeamToTournament = async(req,res)=>{
     try{
