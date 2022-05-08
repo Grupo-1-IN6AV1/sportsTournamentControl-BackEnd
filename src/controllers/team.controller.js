@@ -62,7 +62,7 @@ exports.createTeam = async (req, res)=>
     catch(err)
     {
         console.log(err);
-        return res.status(500).send({err, message: 'Error created Team.'});
+        return res.status(500).send({message: 'Error created Team.', err});
     }
 }
 
@@ -120,7 +120,7 @@ exports.updateTeam = async(req, res)=>
     catch(err)
     {
         console.log(err);
-        return res.status(500).send({err, message: 'Error updating Team.'});
+        return res.status(500).send({message: 'Error updating Team.', err});
     }
 }
 
@@ -186,14 +186,14 @@ exports.getTeamUser = async(req,res)=>
         }).lean();
 
         if(team)
-        return res.send({message:'Team Found',team});
+        return res.send({message:'Team Found', team});
 
-        return res.status(401).send({message:'Team Not Found'});
+        return res.send({message:'Team Not Found'});
     }
     catch(err)
     {
         console.log(err);
-        return res.status(500).send({err, message: 'Error getting Team.'});
+        return res.status(500).send({message: 'Error getting Team.', err});
     }
 }
 
