@@ -7,8 +7,8 @@ const api = express.Router();
 
 api.get('/tournamentTest', tournamentController.tournamentTest);
 api.post('/createTournament', mdAuth.ensureAuth, tournamentController.createTournament);
-api.get('/getTournaments', mdAuth.ensureAuth, tournamentController.viewTournaments);
-api.get('/getTournament/:id', mdAuth.ensureAuth, tournamentController.viewTournament);
+api.get('/getTournaments', mdAuth.ensureAuth, tournamentController.getTournaments);
+api.get('/getTournament/:id', mdAuth.ensureAuth, tournamentController.getTournament);
 api.put('/updateTournament/:id', mdAuth.ensureAuth, tournamentController.updateTournament);
 api.put('/updateTournamentByAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.updateTournamentByAdmin);
 api.delete('/deleteTournament/:id', mdAuth.ensureAuth, tournamentController.deleteTournament);

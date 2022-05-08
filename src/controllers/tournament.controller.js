@@ -48,26 +48,46 @@ exports.createTournament = async(req, res)=>
     }
 }
 
-exports.viewTournaments =  async(req, res)=>{
-    try{
-        const tournaments = await Tournament.find().lean();
-        if(tournaments.length == 0) return res.send({message: 'Tournaments not found'});
+exports.getTournaments =  async(req, res)=>{
+    try
+    {
+        const tournaments = await Tournament.find({user: req.user.sub}).lean();
+        if(tournaments.length == 0) 
+            return res.send({message: 'Tournaments not found'});
+        
         return res.send({tournaments});
-    }catch(err){
+    }
+    catch(err)
+    {
         console.log(err);
         return res.status(500).send({err, message: 'Error getting Tournaments'});
     }
 }
 
-exports.viewTournament =  async(req, res)=>{
-    try{
+exports.getTournament =  async(req, res)=>
+{
+    try
+    {
         const tournamentId = req.params.id;
-        const tournament = await Tournament.findOne({_id: tournamentId});
-        if(!tournament) return res.send({message: 'Tournament not found'});
+        const tournament = await Tournament.findOne(
+        {$and:
+            [
+                {_id: tournamentId},
+                {user: req.user.sub}
+            ]
+        }).lean();
+        if(!tournament) return res.send({message: 'Tournament Not Found'});
+
+        const teamsExist = await tournament.teams;
+        if(teamsExist.length == 0)
+            return res.send({message:'This tournament not contains Teams.', tournament})
+        
         return res.send({tournament});
-    }catch(err){
+    }
+    catch(err)
+    {
         console.log(err);
-        return res.status(500).send({err, message: 'Error getting Tournament'});
+        return res.status(500).send({message: 'Error getting Tournament',err});
     }
 }
 
