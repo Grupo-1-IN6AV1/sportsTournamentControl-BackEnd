@@ -4,6 +4,7 @@ const {validateData} = require('../utils/validate');
 const Tournament = require('../models/tournament.model');
 const User = require('../models/user.model');
 const Team = require('../models/team.model');
+const Journey = require('../models/journey.model');
 
 exports.tournamentTest = (req, res)=>
 {
