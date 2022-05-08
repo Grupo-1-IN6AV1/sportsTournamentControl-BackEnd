@@ -10,8 +10,10 @@ exports.tournamentTest = (req, res)=>
     return res.send({message: 'Team test is running.'});
 }
 
-exports.createTournament = async(req, res)=>{
-    try{
+exports.createTournament = async(req, res)=>
+{
+    try
+    {
         const params = req.body;
         const userId = req.user.sub;
         const data = 
@@ -19,12 +21,11 @@ exports.createTournament = async(req, res)=>{
             name: params.name,
             description: params.description,
             user: userId,
-            journey: params.journey,
         };
         const msg = validateData(data);
         if(msg) return res.status(400).send(msg);
         
-        const tournamentExist = await findOne(
+        const tournamentExist = await Tournament.findOne(
         {
             $and:
             [
@@ -39,7 +40,9 @@ exports.createTournament = async(req, res)=>{
         const tournament = new Tournament(data);
         await tournament.save();
         return res.send({message: 'Tournament created successfully', tournament});
-    }catch(err){
+    }
+    catch(err)
+    {
         console.log(err);
         return res.status(500).send({err, message: 'Error creating Tournament'});
     }

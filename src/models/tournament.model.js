@@ -6,7 +6,7 @@ const tournamentSchema = mongoose.Schema({
     name: String,
     description: String,
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
-    journey: 
+    journeys: 
     [
         {type: mongoose.Schema.ObjectId, ref: 'Journey'}
     ],
