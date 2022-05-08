@@ -393,3 +393,52 @@ exports.deleteTeamTournament = async (req, res) => {
         return err;
     }
 }
+
+
+//DELETE || Eliminar jornadas en torneos//
+exports.deleteJourneyTournament = async (req, res) => {
+    try 
+    {
+        const params = req.body;
+        const user = req.user.sub;
+        const tournamentId = req.params.id;
+        const journeyId = params.journey
+
+        const tournamentExist = await Tournament.findOne({$and:[{ _id: tournamentId },{ user: user }]});
+
+        //Verificar que Exista el torneo//
+        if (!tournamentExist)
+            return res.status(401).send({ message: 'Tournament not Found.' })
+
+        const msg = validateData(journeyId);
+        if (msg)
+            return res.status(400).send(msg);
+
+        //Busca el Equipo por ID y Usuario//
+        const journeyExist = await Journey.findOne({$and:[{ _id: journeyId },{ user: user }]}).lean();
+        if (!journeyExist)
+            return res.send({ message: 'Journey not Found.' });
+
+        //Validar que ese equipo ya exista en el torneo//
+        //Busca el Equipo por ID y Usuario//
+
+        //Verificar que no se repitan los Equipos//
+        for(var key=0; key<tournamentExist.journeys.length; key++)
+        {
+            const checkJourney = tournamentExist.journeys[key].journey;
+            if(checkJourney != journeyId)continue;
+                const removeJourney = await Tournament.findOneAndUpdate({$and:[{_id: tournamentId},{user: user}]}, 
+                    { $pull: { 'journeys': { 'journey': journeyId } } }, {new:true});
+                if(!removeJourney) return res.status(401).send({message: 'Journey can not remove of tournament'});
+                return res.send({message: 'Journey deleted of Tournament', removeJourney});
+        }
+        
+        return res.status(401).send({message:'Journey Not Found in this Tournament.'})
+         
+    } 
+    catch (err) 
+    {
+        console.log(err);
+        return err;
+    }
+}
