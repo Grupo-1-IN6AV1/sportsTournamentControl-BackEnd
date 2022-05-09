@@ -398,3 +398,42 @@ exports.getTeamsAdmin = async (req, res) => {
         return res.status(500).send({ message: 'Error getting Teams.', err});
     }
 }
+
+
+//P A R T E    D E     E S T A D Í S T I C A//
+
+//------ ng2Charts -----------//
+
+exports.ng2charts = async (req, res) => {
+    try 
+    {
+        const user = req.user.sub;
+        const params = req.body;
+        let data = 
+        {
+            tournament: params.tournament,
+        };
+
+        let msg = validateData(data);
+        if (msg)
+        return res.status(400).send(msg); 
+        
+        const tournamentExist = await Tournament.findOne({ _id: data.tournament }).populate('teams');
+        if(!tournamentExist)
+            return res.status(400).send({message:'Tournament not Found'})
+
+        const teamsExist = tournamentExist.teams.sort((teamLocal, teamVisiting) => 
+        {
+                return - teamLocal.proGoals + teamVisiting.proGoals
+        });
+
+        if(!teamsExist)
+            return res.status(400).send({message:'Teams Not Founds.'})
+
+        return res.send({ messsage: 'Teams Founds:', teamsExist });
+        
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send({ message: 'Error getting teams.' });
+    }
+} 

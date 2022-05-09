@@ -19,4 +19,7 @@ api.put('/updateTeamAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], teamControl
 api.delete('/deleteTeamAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], teamController.deleteTeamAdmin);
 
 
+//ng2Charts//
+api.get('/ng2charts', mdAuth.ensureAuth, teamController.ng2charts);
+
 module.exports = api;
