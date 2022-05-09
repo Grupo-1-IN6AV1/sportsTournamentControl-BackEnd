@@ -1,0 +1,1596 @@
+{
+	"info": {
+		"_postman_id": "432a6b18-0a7f-4b2f-a80f-8512a9dcfa45",
+		"name": "Grupo 1 IN6AV1 - tournamentControlSports",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "USER",
+			"item": [
+				{
+					"name": "ADMIN",
+					"item": [
+						{
+							"name": "Function Save User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUxNzMxNTMxLCJleHAiOjE2NTE3NDIzMzF9.ITuaHxbD_V8qQl3dNNprJ7neFEhYIBuHMQDvaKjisdI\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "djuarez-2020121",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12345",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Daniel",
+											"type": "text"
+										},
+										{
+											"key": "surname",
+											"value": "Juárez",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "22160525",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "djuarez@kinal.edu.gt",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "ADMIN",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/user/saveUser",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"user",
+										"saveUser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Update User",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDEwMTc4LCJleHAiOjE2NTIwOTY1Nzh9.2ea1_c3jS4mcjZWDUwy3crjiJAVx5IfI0vP-dM2RkQs\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "sixpatac-2020209",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Sduard",
+											"type": "text"
+										},
+										{
+											"key": "surname",
+											"value": "Ixpatac",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "22160525",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "sixpatac@kinal.edu.gt",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "CLIENT",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/user/updateUser/627367cb9ebbefc889d1b0f8",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"user",
+										"updateUser",
+										"627367cb9ebbefc889d1b0f8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Delete User",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUxNzMxMTc5LCJleHAiOjE2NTE3NDE5Nzl9.6nQZVcq9YtinTYWniLcRoyT0cl4fterz34vRQpwJszU\"",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:3200/user/deleteUser/62736aa2d61ab479689c647a",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"user",
+										"deleteUser",
+										"62736aa2d61ab479689c647a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Get User",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUxNzMxNTMxLCJleHAiOjE2NTE3NDIzMzF9.ITuaHxbD_V8qQl3dNNprJ7neFEhYIBuHMQDvaKjisdI\"",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:3200/user/getUser/62671d3391864dbd093b69ef",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"user",
+										"getUser",
+										"62671d3391864dbd093b69ef"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Search User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUxNzMxNTMxLCJleHAiOjE2NTE3NDIzMzF9.ITuaHxbD_V8qQl3dNNprJ7neFEhYIBuHMQDvaKjisdI\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/user/searchUser",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"user",
+										"searchUser"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "USER",
+					"item": [
+						{
+							"name": "Function Login",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDQwNzQxLCJleHAiOjE2NTIwNTE1NDF9.8EUeCHzlSs7N6iyE2q4W6IX7rRd5Bmk3taepEfylKg8\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "ADMIN",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "deportes123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/user/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "rcardenas",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12345",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Rodrigo",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "rcardenas@kinal.edu.gt",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/user/register",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"user",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Update Account",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2Mjc4NGUyMGY2M2ZjMjAzNTBkNmViZjQiLCJuYW1lIjoiUm9kcmlnbyIsInVzZXJuYW1lIjoicmNhcmRlbmFzIiwicm9sZSI6IkNMSUVOVCIsImlhdCI6MTY1MjA1MTY1OSwiZXhwIjoxNjUyMDYyNDU5fQ.E0iviulUVqFGn54uIMwl5-nixWxGFNA0kyqWFJaFk-Y\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "rcardenas",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Rodrigo",
+											"type": "text"
+										},
+										{
+											"key": "surname",
+											"value": "Cárdenas",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "rcardenas@kinal.edu.gt",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "22557600",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/user/update/62784e20f63fc20350d6ebf4",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"user",
+										"update",
+										"62784e20f63fc20350d6ebf4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Delete Account",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2Mjc4NGUyMGY2M2ZjMjAzNTBkNmViZjQiLCJuYW1lIjoiUm9kcmlnbyIsInVzZXJuYW1lIjoicmNhcmRlbmFzIiwicm9sZSI6IkNMSUVOVCIsImlhdCI6MTY1MjA1MTY1OSwiZXhwIjoxNjUyMDYyNDU5fQ.E0iviulUVqFGn54uIMwl5-nixWxGFNA0kyqWFJaFk-Y\"",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:3200/user/delete/62784e20f63fc20350d6ebf4",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"user",
+										"delete",
+										"62784e20f63fc20350d6ebf4"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Function Test User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3200/user/userTest",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"user",
+								"userTest"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TEAM",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Function Create Team",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDUxOTA1LCJleHAiOjE2NTIwNjI3MDV9.ZIM2tY2TnKCOnBj_0OLPzZiXPIABTrj3CtwjTYaiWTI\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Real Madrid",
+											"type": "text"
+										},
+										{
+											"key": "country",
+											"value": "Spain",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Blanco",
+											"type": "text"
+										},
+										{
+											"key": "tournament",
+											"value": "627858528c0dc972fc56fcaf",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/team/createTeam",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"team",
+										"createTeam"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Get Teams User",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDQwNzQxLCJleHAiOjE2NTIwNTE1NDF9.8EUeCHzlSs7N6iyE2q4W6IX7rRd5Bmk3taepEfylKg8\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "tournament",
+											"value": "62782e104f7e973e4b84ae35",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/team/getTeamsUser",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"team",
+										"getTeamsUser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Get Team User",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjdjYjllYmJlZmM4ODlkMWIwZjgiLCJuYW1lIjoiU2R1YXJkIiwic3VybmFtZSI6IiIsInVzZXJuYW1lIjoic2l4cGF0YWMtMjAyMDIwOSIsInJvbGUiOiJDTElFTlQiLCJpYXQiOjE2NTIwMTIyNDcsImV4cCI6MTY1MjA5ODY0N30.Q9SH55a0zEEqkDV-pUDhfapl3TytRBT09xHbojUh9XM\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "tournament",
+											"value": "627797035fd48843ca38b20a",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/team/getTeamUser/627797035fd48843ca38b20a",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"team",
+										"getTeamUser",
+										"627797035fd48843ca38b20a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Update Team",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDExMzM5LCJleHAiOjE2NTIwOTc3Mzl9.3AeKVHHKsPVVvxFznif9wkac1SsJqLwQXW4aqg0uVUg\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Barcelona",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "FCB",
+											"type": "text"
+										},
+										{
+											"key": "country",
+											"value": "Spain",
+											"type": "text"
+										},
+										{
+											"key": "tournament",
+											"value": "627797035fd48843ca38b20a",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/team/updateTeam/6277a7b411e5841d2a17ceb3",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"team",
+										"updateTeam",
+										"6277a7b411e5841d2a17ceb3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Delete Team",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDA1MzQ2LCJleHAiOjE2NTIwOTE3NDZ9.H5IMVJCvszz-YdoE_lt94dhlI3lE8SMoGS6DGFokwvw\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "tournament",
+											"value": "627797035fd48843ca38b20a",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/team/deleteTeam/6277a75b11e5841d2a17ce65",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"team",
+										"deleteTeam",
+										"6277a75b11e5841d2a17ce65"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Function Get Team Admin",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDEyNDYzLCJleHAiOjE2NTIwOTg4NjN9.pM1QegFnLcTt07vBe13pdULS_RoIzhd8Odb9aKuN3EM\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "tournament",
+											"value": "6277b56f997bebac841f36d5",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/team/getTeamAdmin/6277b596997bebac841f36d9",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"team",
+										"getTeamAdmin",
+										"6277b596997bebac841f36d9"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Get Teams Admin",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDQwNzQxLCJleHAiOjE2NTIwNTE1NDF9.8EUeCHzlSs7N6iyE2q4W6IX7rRd5Bmk3taepEfylKg8\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "tournament",
+											"value": "627797035fd48843ca38b20a",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/team/getTeamsAdmin",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"team",
+										"getTeamsAdmin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Search Team",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUxNzQwMDQ2LCJleHAiOjE2NTE3NTA4NDZ9.S-RPDZDp4giAj68cVye9LSsK0vtZ5POjZgr0ojSxoMY\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Rea",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/team/searchTeamsUser",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"team",
+										"searchTeamsUser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Update Team Admin",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDI0NjA3LCJleHAiOjE2NTIxMTEwMDd9.p4UrA9Link7dkyRkPDb0ya2uz7cbqxGd-dbKSiydg38\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Barcelona",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "FCB",
+											"type": "text"
+										},
+										{
+											"key": "country",
+											"value": "Spain",
+											"type": "text"
+										},
+										{
+											"key": "tournament",
+											"value": "6277b56f997bebac841f36d5",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/team/updateTeamAdmin/6277b599997bebac841f3703",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"team",
+										"updateTeamAdmin",
+										"6277b599997bebac841f3703"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Delete Team Admin",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDA1MzQ2LCJleHAiOjE2NTIwOTE3NDZ9.H5IMVJCvszz-YdoE_lt94dhlI3lE8SMoGS6DGFokwvw\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "tournament",
+											"value": "6277b56f997bebac841f36d5",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/team/deleteTeamAdmin/6277b599997bebac841f3703",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"team",
+										"deleteTeamAdmin",
+										"6277b599997bebac841f3703"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Function Test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3200/team/teamTest",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"team",
+								"teamTest"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "JOURNEY",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Function Delete Match",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDQwNzQxLCJleHAiOjE2NTIwNTE1NDF9.8EUeCHzlSs7N6iyE2q4W6IX7rRd5Bmk3taepEfylKg8\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "tournament",
+											"value": "62782e104f7e973e4b84ae35",
+											"type": "text"
+										},
+										{
+											"key": "journey",
+											"value": "6278371cacb51b8e0474363f",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/journey/deleteMatch/627837fe8a0fa3b5494cfcc7",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"journey",
+										"deleteMatch",
+										"627837fe8a0fa3b5494cfcc7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Add Match",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDUxOTA1LCJleHAiOjE2NTIwNjI3MDV9.ZIM2tY2TnKCOnBj_0OLPzZiXPIABTrj3CtwjTYaiWTI\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "date",
+											"value": "2022-05-05 14:20:00",
+											"type": "text"
+										},
+										{
+											"key": "localTeam",
+											"value": "62785c798c0dc972fc56fd13",
+											"type": "text"
+										},
+										{
+											"key": "localScore",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "visitingTeam",
+											"value": "62785cbc8c0dc972fc56fd1c",
+											"type": "text"
+										},
+										{
+											"key": "visitingScore",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "tournament",
+											"value": "62785c698c0dc972fc56fd0a",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/journey/addMatch/62785c798c0dc972fc56fd16",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"journey",
+										"addMatch",
+										"62785c798c0dc972fc56fd16"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Get Matches Copy",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDQwNzQxLCJleHAiOjE2NTIwNTE1NDF9.8EUeCHzlSs7N6iyE2q4W6IX7rRd5Bmk3taepEfylKg8\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "journey",
+											"value": "6278371dacb51b8e04743648"
+										},
+										{
+											"key": "tournament",
+											"value": "62782e104f7e973e4b84ae35"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/journey/getMatch/6278420333fcf4b80c37e067",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"journey",
+										"getMatch",
+										"6278420333fcf4b80c37e067"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Get Matches",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDQwNzQxLCJleHAiOjE2NTIwNTE1NDF9.8EUeCHzlSs7N6iyE2q4W6IX7rRd5Bmk3taepEfylKg8\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "journey",
+											"value": "6278371dacb51b8e04743648"
+										},
+										{
+											"key": "tournament",
+											"value": "62782e104f7e973e4b84ae35"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/journey/getMatches",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"journey",
+										"getMatches"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Function Get Journey Admin",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDUxOTA1LCJleHAiOjE2NTIwNjI3MDV9.ZIM2tY2TnKCOnBj_0OLPzZiXPIABTrj3CtwjTYaiWTI\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "tournament",
+											"value": "62785c698c0dc972fc56fd0a"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/journey/getJourneyAdmin/62785c798c0dc972fc56fd16",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"journey",
+										"getJourneyAdmin",
+										"62785c798c0dc972fc56fd16"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Get Journeys Admin",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDUxOTA1LCJleHAiOjE2NTIwNjI3MDV9.ZIM2tY2TnKCOnBj_0OLPzZiXPIABTrj3CtwjTYaiWTI\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "tournament",
+											"value": "62785c698c0dc972fc56fd0a"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/journey/getJourneysAdmin/",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"journey",
+										"getJourneysAdmin",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Get Matches Admin",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDUxOTA1LCJleHAiOjE2NTIwNjI3MDV9.ZIM2tY2TnKCOnBj_0OLPzZiXPIABTrj3CtwjTYaiWTI\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "tournament",
+											"value": "62785c698c0dc972fc56fd0a"
+										},
+										{
+											"key": "journey",
+											"value": "62785cc28c0dc972fc56fd31",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/journey/getMatchesAdmin/",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"journey",
+										"getMatchesAdmin",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Delete Match",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDUxOTA1LCJleHAiOjE2NTIwNjI3MDV9.ZIM2tY2TnKCOnBj_0OLPzZiXPIABTrj3CtwjTYaiWTI\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "tournament",
+											"value": "62785c698c0dc972fc56fd0a"
+										},
+										{
+											"key": "journey",
+											"value": "62785c798c0dc972fc56fd16",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/journey/deleteMatchAdmin/627870523cb7761fdea4636b",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"journey",
+										"deleteMatchAdmin",
+										"627870523cb7761fdea4636b"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "TOURNAMENT",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Function Create Tournament",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDUxOTA1LCJleHAiOjE2NTIwNjI3MDV9.ZIM2tY2TnKCOnBj_0OLPzZiXPIABTrj3CtwjTYaiWTI\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Liga Guatemalteca",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Liga Guatemala",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/tournament/createTournament",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"tournament",
+										"createTournament"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Update Tournament",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUxOTczMDIyLCJleHAiOjE2NTE5ODM4MjJ9.yeC-DTpS9mZzRPDkUVpFx_1RH1yIkPa47JDLyokKILw\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Liga Guatemalteca",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Liga de Guatemala",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/tournament/updateTournament/6277218995ea86fb74c3060d",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"tournament",
+										"updateTournament",
+										"6277218995ea86fb74c3060d"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Delete Tournament",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUxOTczMDIyLCJleHAiOjE2NTE5ODM4MjJ9.yeC-DTpS9mZzRPDkUVpFx_1RH1yIkPa47JDLyokKILw\"",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:3200/tournament/deleteTournament/6277218995ea86fb74c3060d",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"tournament",
+										"deleteTournament",
+										"6277218995ea86fb74c3060d"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Get Tournaments",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDUxOTA1LCJleHAiOjE2NTIwNjI3MDV9.ZIM2tY2TnKCOnBj_0OLPzZiXPIABTrj3CtwjTYaiWTI\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "localhost:3200/tournament/getTournaments",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"tournament",
+										"getTournaments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Get Tournament",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDQwNzQxLCJleHAiOjE2NTIwNTE1NDF9.8EUeCHzlSs7N6iyE2q4W6IX7rRd5Bmk3taepEfylKg8\"",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:3200/tournament/getTournament/62782e104f7e973e4b84ae35",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"tournament",
+										"getTournament",
+										"62782e104f7e973e4b84ae35"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Function Tournaments Admin",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDUxOTA1LCJleHAiOjE2NTIwNjI3MDV9.ZIM2tY2TnKCOnBj_0OLPzZiXPIABTrj3CtwjTYaiWTI\"",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:3200/tournament/getTournamentsByAdmin",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"tournament",
+										"getTournamentsByAdmin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Get Tournament Admin",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDUxOTA1LCJleHAiOjE2NTIwNjI3MDV9.ZIM2tY2TnKCOnBj_0OLPzZiXPIABTrj3CtwjTYaiWTI\"",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:3200/tournament/getTournamentByAdmin/627797035fd48843ca38b20a",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"tournament",
+										"getTournamentByAdmin",
+										"627797035fd48843ca38b20a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Delete Tournament Admin",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDUxOTA1LCJleHAiOjE2NTIwNjI3MDV9.ZIM2tY2TnKCOnBj_0OLPzZiXPIABTrj3CtwjTYaiWTI\"",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:3200/tournament/deleteTournamentByAdmin/627797035fd48843ca38b20a",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"tournament",
+										"deleteTournamentByAdmin",
+										"627797035fd48843ca38b20a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Function Update Tournamet Admin",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDUxOTA1LCJleHAiOjE2NTIwNjI3MDV9.ZIM2tY2TnKCOnBj_0OLPzZiXPIABTrj3CtwjTYaiWTI\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Liga Española",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "España",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3200/tournament/updateTournamentByAdmin/62782e104f7e973e4b84ae35",
+									"host": [
+										"localhost"
+									],
+									"port": "3200",
+									"path": [
+										"tournament",
+										"updateTournamentByAdmin",
+										"62782e104f7e973e4b84ae35"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Function Test Tournament",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "localhost:3200/tournament/tournamentTest",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"tournament",
+								"tournamentTest"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BETA ng2Charts",
+			"item": [
+				{
+					"name": "Function Sort Teams",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjczNjVkMThjZjMwNWRmMDQyYTA2YjEiLCJuYW1lIjoiQURNSU4iLCJzdXJuYW1lIjoiQURNSU4iLCJ1c2VybmFtZSI6IkFETUlOIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNjUyMDYxNTQyLCJleHAiOjE2NTIwNzIzNDJ9.IPIWf7jAAan-gz-5bnM2XgsrrUhzfT2eC2NkCTyWbaQ\"",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "tournament",
+									"value": "62785c698c0dc972fc56fd0a",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3200/team/ng2charts",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"team",
+								"ng2charts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
