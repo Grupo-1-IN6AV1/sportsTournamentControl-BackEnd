@@ -7,7 +7,17 @@ const tournamentSchema = mongoose.Schema({
     description: String,
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     journeys: [{type: mongoose.Schema.ObjectId, ref: 'Journey'}],
-    teams: [ {type: mongoose.Schema.ObjectId, ref: 'Team'}] 
+    teams: [{
+        team: {type: mongoose.Schema.ObjectId, ref: 'Team'},
+        teamPoints : Number,
+        playedMatches : Number,
+        wonMatches : Number,
+        tiedMatches : Number,
+        lostMatches : Number,
+        proGoals : Number,
+        againstGoals : Number,
+        differenceGoals : Number
+    }] 
 });
 
 module.exports = mongoose.model('Tournament', tournamentSchema);
