@@ -1,6 +1,5 @@
 'use strict'
 
-
 //Importación del Modelo de Equipo//
 const Team = require('../models/team.model');
 //Importación del Modelo de Torneo//
@@ -10,7 +9,6 @@ const Journey = require('../models/journey.model');
 
 //Validación de Data//
 const {validateData} = require('../utils/validate');
-const {checkUpdateTeams} = require('../utils/validate');
 
 //F U N C I O N E S     P Ú B L I C A S//
 
@@ -33,55 +31,18 @@ exports.createTeam = async (req, res) =>
         const user = req.user.sub;
         const data = 
         {
-            tournament: params.tournament,
             user: user,
             name: params.name,
             country: params.country,
             description: params.description,
-            proGoals: 0,
-            againGoals: 0,
-            differenceGoals: 0,
-            teamPoints:0,
-            wonMatches:0,
-            tiedMatches:0,
-            lostMatches:0,
-            playedMatchs: 0,
         };
         
         let msg = validateData(data);
-        if (msg)
-            return res.status(400).send(msg);
-
-            const tournamentExist = await Tournament.findOne({$and:[ {_id: data.tournament},{user:user}]});
-            //Verificar que Exista el Torneo//
-            if (!tournamentExist) 
-                return res.status(400).send({message:'Cant add Team to this Tournament'});
-                
-            if(tournamentExist.teams.length > 9)
-            return res.status(400).send({message:'Cannot add to team because maximum number of added teams reached'});
-
+        if (msg) return res.status(400).send(msg);
             //Guardar el Equipo//
             const newTeam = new Team(data);
             await newTeam.save();
-
-            //Pushear el Equipo al Torneo//
-            await Tournament.findOneAndUpdate(
-                {_id: data.tournament},
-                {$push:{teams: newTeam._id}},
-                {new:true});
-
-            //Automatizando las Jornadas//
-            if (tournamentExist.teams.length>0)
-            {
-                const newJourney = new Journey({name:`Journey ${tournamentExist.teams.length}`})
-                await newJourney.save();
-                
-                const pushJourneyTournament = await Tournament.findOneAndUpdate({ _id: data.tournament }, 
-                    { $push: { journeys: newJourney._id } },{ new: true });
-            }
-
-            const updateTournament = await Tournament.findOne({ _id: data.tournament}).populate('teams')
-                return res.send({ message: 'Team create successfully in this tournament', updateTournament });
+            return res.send({message: 'Saving team successfully', newTeam})
     } 
     catch (err) 
     {
@@ -183,10 +144,6 @@ exports.updateTeam = async (req, res) =>
 
         if(!teamExist)
             return res.status(400).send({ message: 'Team not Found' })
-            
-        const checkparams = await checkUpdateTeams(params);
-        if (checkparams === false) 
-            return res.status(400).send({ message: 'Invalid Params to Update Team.' })
         
         const updateTeam = await Team.findOneAndUpdate({ _id: teamId }, params, { new: true }).lean();
         if (!updateTeam) 
@@ -229,7 +186,7 @@ exports.deleteTeam = async (req, res) =>
         const deleteTeam = await Team.findOneAndDelete({ _id: teamId});
         //Eliminando de Torneos//
         const removeTeamTournament = await Tournament.findOneAndUpdate({$and:[{_id:data.tournament},{user: userId}]}, 
-            { $pull: {'teams':teamId} }, {new:true});
+            { $pull: {'teams': {'team': params.teamId}}}, {new:true});
         //Eliminando de Journeys//
         const removeJourney = await Journey.findOneAndDelete({_id:teamExist.journeys.at(-1)});
         const removeTeamJourney = await Tournament.findOneAndUpdate({journeys:removeJourney._id},
@@ -268,21 +225,17 @@ exports.updateTeamAdmin = async (req, res) => {
 
         if(!teamExist)
             return res.status(400).send('Team Not Found.')
-        
-        const checkUpdated = await checkUpdateTeams(params);
-        if (checkUpdated === false)
-            return res.status(400).send({ message: 'Invalid Params to Update Team.' })
                 
         const updateTeam = await Team.findOneAndUpdate({ _id: teamId }, params, { new: true }).lean();
         if (!updateTeam) 
-            return res.send({ message: 'No se ha podido actualizar el equipo' })
+            return res.send({ message: 'Failed to update team' })
         return res.send({ message: 'Team Updated:', updateTeam })
 
     } 
     catch (err) 
     {
         console.log(err);
-        return res.status(500).send({ message: 'Error actualizando el equipo' });
+        return res.status(500).send({ message: 'Error updating the team' });
     }
 }
 
