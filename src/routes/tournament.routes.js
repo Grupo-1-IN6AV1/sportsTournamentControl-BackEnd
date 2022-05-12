@@ -13,11 +13,13 @@ api.get('/getTournaments', mdAuth.ensureAuth, tournamentController.getTournament
 api.get('/getTournament/:id', mdAuth.ensureAuth, tournamentController.getTournament);
 api.put('/updateTournament/:id', mdAuth.ensureAuth, tournamentController.updateTournament);
 api.delete('/deleteTournament/:id', mdAuth.ensureAuth, tournamentController.deleteTournament);
+api.post('/addTeam/:id', mdAuth.ensureAuth, tournamentController.addTeam);
+api.post('/deleteTeam/:id', mdAuth.ensureAuth, tournamentController.deleteTeam);
 
 //ADMIN//
 api.put('/updateTournamentByAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.updateTournamentByAdmin);
 api.delete('/deleteTournamentByAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.deleteTournamentByAdmin);
-api.get('/getTournamentsByAdmin', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.getTournamentsByAdmin)
-api.get('/getTournamentByAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.getTournamentByAdmin)
+api.get('/getTournamentsByAdmin', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.getTournamentsByAdmin);
+api.get('/getTournamentByAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.getTournamentByAdmin);
 
 module.exports = api;
