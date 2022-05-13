@@ -163,10 +163,10 @@ exports.deleteUser = async(req, res)=>
         const userId = req.params.id;
 
         const userExist = await User.findOne({_id: userId});
-        if(!userExist) return res.send({message: 'User not found'});
-        if(userExist.role === 'ADMIN') return res.send({message: ' Could not deleted User with ADMIN role'});
+        if(!userExist) return res.status(400).send({message: 'User not found'});
+        if(userExist.role === 'ADMIN') return res.status(400).send({message: ' Could not deleted User with ADMIN role'});
         const userDeleted = await User.findOneAndDelete({_id: userId});
-        if(!userDeleted) return res.send({message: 'User not deleted'});
+        if(!userDeleted) return res.status(400).send({message: 'User not deleted'});
         return res.send({message: 'Account deleted successfully', userDeleted})
     }
     catch(err)
@@ -225,6 +225,28 @@ exports.searchUser = async (req, res)=>
     {
         console.log(err);
         return res.status(500).send({message: 'Error searching Users.', err});
+    }
+}
+
+exports.getUsers = async (req, res) => 
+{
+    try 
+    {
+
+        const user = await User.find({});
+        if (!user) 
+        {
+            return res.status(400).send({ message: 'This user does not exist.' })
+        } 
+        else 
+        {
+            return res.send({message:'User Found:', user});
+        }
+    } 
+    catch (err) 
+    {
+        console.log(err)
+        return res.status(500).send({ message: 'Error getting User.', err});
     }
 }
 
