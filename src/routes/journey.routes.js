@@ -8,7 +8,6 @@ const api = express.Router();
 
 api.get('/getJourneys/:id', mdAuth.ensureAuth, journeyController.getJourneys);
 api.post('/addMatch/:id', mdAuth.ensureAuth, journeyController.addMatch);
-api.post('/getMatches', mdAuth.ensureAuth, journeyController.getMatches);
 api.get('/getJourney/:id', mdAuth.ensureAuth, journeyController.getJourney)
 api.post('/deleteJorney/:id', mdAuth.ensureAuth, journeyController.deleteJourney);
 api.get('/getMatches/:id', mdAuth.ensureAuth, journeyController.getMatches);

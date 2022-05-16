@@ -154,36 +154,19 @@ exports.getMatches = async (req, res) =>
 {
     try 
     {
-        const userId = req.user.sub;
-        const params = req.body;
-        let data = 
-        {
-            tournament: params.tournament,
-            journey: params.journey
-        };
+        const journeyId = req.params.id;
 
-        let msg = validateData(data);
-        if (msg)
-            return res.status(400).send(msg); 
-        
-        const tournament = await Tournament.findOne(
-            {$and:[ {_id: data.tournament},{journeys: data.journey},{user:userId}]});
-
-        if(!tournament)
-            return res.status(400).send({message:'Matches Not Found'});
-
-        const journey = await Journey.findOne({ _id: data.journey }).populate('matches.localTeam matches.visitingTeam');
-        const matches = journey.matches;
-
-        if(!matches)
-            return res.send({ message: 'Matches Not Found.' });
-
-        return res.send({ messsage: 'Matches Found:', matches });      
+        const journeyExist = await Journey.findOne({ _id: journeyId}).populate('matches.localTeam matches.visitingTeam');
+        const match = await journeyExist.matches;
+        if (!match) 
+                return res.send({ message: 'Match Not Found' }); 
+            
+            return res.send({ messsage: 'Match Found:', match });                    
     } 
     catch (err) 
     {
         console.log(err);
-        return res.status(500).send({ message: 'Error getting Matches', err});
+        return res.status(500).send({ message: 'Error getting Match', err});
     }
 }
 
