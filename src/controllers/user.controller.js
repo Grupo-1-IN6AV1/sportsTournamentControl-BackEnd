@@ -142,7 +142,7 @@ exports.updateUser = async(req, res)=>{
         if(!userExist) return res.send({message: 'User not found'});
         const emptyParams = await checkUpdateAdmin(params);
         if(emptyParams === false) return res.status(400).send({message: 'Empty params or params not update'});
-        if(userExist.role === 'ADMIN') return res.send({message: 'User with ADMIN role cant update'});
+        if(userExist.role === 'ADMIN') return res.status(400).send({message: 'User with ADMIN role cant update'});
         const alreadyUsername = await alreadyUser(params.username);
         if(alreadyUsername && userExist.username != alreadyUsername.username) return res.send({message: 'Username already taken'});
         if(params.role != 'ADMIN' && params.role != 'CLIENT') return res.status(400).send({message: 'Invalid role'});
@@ -163,10 +163,10 @@ exports.deleteUser = async(req, res)=>
         const userId = req.params.id;
 
         const userExist = await User.findOne({_id: userId});
-        if(!userExist) return res.send({message: 'User not found'});
-        if(userExist.role === 'ADMIN') return res.send({message: ' Could not deleted User with ADMIN role'});
+        if(!userExist) return res.status(400).send({message: 'User not found'});
+        if(userExist.role === 'ADMIN') return res.status(400).send({message: ' Could not deleted User with ADMIN role'});
         const userDeleted = await User.findOneAndDelete({_id: userId});
-        if(!userDeleted) return res.send({message: 'User not deleted'});
+        if(!userDeleted) return res.status(400).send({message: 'User not deleted'});
         return res.send({message: 'Account deleted successfully', userDeleted})
     }
     catch(err)
@@ -225,6 +225,28 @@ exports.searchUser = async (req, res)=>
     {
         console.log(err);
         return res.status(500).send({message: 'Error searching Users.', err});
+    }
+}
+
+exports.getUsers = async (req, res) => 
+{
+    try 
+    {
+
+        const user = await User.find({});
+        if (!user) 
+        {
+            return res.status(400).send({ message: 'This user does not exist.' })
+        } 
+        else 
+        {
+            return res.send({message:'User Found:', user});
+        }
+    } 
+    catch (err) 
+    {
+        console.log(err)
+        return res.status(500).send({ message: 'Error getting User.', err});
     }
 }
 

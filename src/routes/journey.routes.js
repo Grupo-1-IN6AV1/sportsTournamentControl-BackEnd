@@ -5,17 +5,14 @@ const mdAuth = require('../services/authenticated');
 const express = require('express');
 const api = express.Router();
 
-//RUTAS DEL USUARIO//
-api.get('/journeyTest', journeyController.testJourney);
-api.post('/addMatch/:id', mdAuth.ensureAuth, journeyController.addMatch);
-api.delete('/deleteMatch/:id', mdAuth.ensureAuth, journeyController.deleteMatch);
-api.get('/getMatches', mdAuth.ensureAuth, journeyController.getMatches);
-api.get('/getMatch/:id', mdAuth.ensureAuth, journeyController.getMatch);
 
-//RUTAS DEL ADMINISTRADOR//
-api.get('/getJourneyAdmin/:id', [mdAuth.ensureAuth,mdAuth.isAdmin], journeyController.getJourneyAdmin);
-api.get('/getJourneysAdmin', [mdAuth.ensureAuth, mdAuth.isAdmin], journeyController.getJourneysAdmin);
-api.get('/getMatchesAdmin', [mdAuth.ensureAuth, mdAuth.isAdmin], journeyController.getMatchesAdmin);
-api.delete('/deleteMatchAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], journeyController.deleteMatchAdmin);
+api.get('/getJourneys/:id', mdAuth.ensureAuth, journeyController.getJourneys);
+api.post('/addMatch/:id', mdAuth.ensureAuth, journeyController.addMatch);
+api.post('/getMatches', mdAuth.ensureAuth, journeyController.getMatches);
+api.get('/getJourney/:id', mdAuth.ensureAuth, journeyController.getJourney)
+api.post('/deleteJorney/:id', mdAuth.ensureAuth, journeyController.deleteJourney);
+api.get('/getMatches/:id', mdAuth.ensureAuth, journeyController.getMatches);
+api.post('/deleteMatch/:id', mdAuth.ensureAuth, journeyController.deleteMatch);
+api.get('/getMatchesAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], journeyController.getMatchesAdmin)
 
 module.exports = api;

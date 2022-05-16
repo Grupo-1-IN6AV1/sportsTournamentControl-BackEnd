@@ -20,7 +20,8 @@ api.delete('/delete/:id', mdAuth.ensureAuth, userController.delete);
 api.post('/saveUser', [mdAuth.ensureAuth, mdAuth.isAdmin], userController.saveUser);
 api.put('/updateUser/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], userController.updateUser);
 api.delete('/deleteUser/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], userController.deleteUser);
-api.get('/getUser/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], userController.getUser);
+api.get('/getUser/:id', mdAuth.ensureAuth, userController.getUser);
 api.post('/searchUser', [mdAuth.ensureAuth, mdAuth.isAdmin], userController.searchUser);
+api.get('/getUsers', [mdAuth.ensureAuth, mdAuth.isAdmin], userController.getUsers);
 
 module.exports = api;

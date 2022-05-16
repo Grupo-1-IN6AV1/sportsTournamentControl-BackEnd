@@ -1,6 +1,5 @@
 'use strict'
 
-
 //Importación del Modelo de Equipo//
 const Team = require('../models/team.model');
 //Importación del Modelo de Torneo//
@@ -9,8 +8,7 @@ const Tournament = require('../models/tournament.model');
 const Journey = require('../models/journey.model');
 
 //Validación de Data//
-const {validateData} = require('../utils/validate');
-const {checkUpdateTeams} = require('../utils/validate');
+const { validateData } = require('../utils/validate');
 
 //F U N C I O N E S     P Ú B L I C A S//
 
@@ -25,134 +23,68 @@ exports.testTeam = (req, res) => {
 //------ U S U A R I O -----------//
 
 //Registrar || Agregar Equipos//
-exports.createTeam = async (req, res) => 
-{
-    try 
-    {
+exports.createTeam = async (req, res) => {
+    try {
         const params = req.body;
         const user = req.user.sub;
-        const data = 
+        const data =
         {
-            tournament: params.tournament,
             user: user,
             name: params.name,
             country: params.country,
             description: params.description,
-            proGoals: 0,
-            againGoals: 0,
-            differenceGoals: 0,
-            teamPoints:0,
-            wonMatches:0,
-            tiedMatches:0,
-            lostMatches:0,
-            playedMatchs: 0,
         };
-        
+
         let msg = validateData(data);
-        if (msg)
-            return res.status(400).send(msg);
+        if (msg) return res.status(400).send(msg);
 
-            const tournamentExist = await Tournament.findOne({$and:[ {_id: data.tournament},{user:user}]});
-            //Verificar que Exista el Torneo//
-            if (!tournamentExist) 
-                return res.status(400).send({message:'Cant add Team to this Tournament'});
-                
-            if(tournamentExist.teams.length > 9)
-            return res.status(400).send({message:'Cannot add to team because maximum number of added teams reached'});
-
-            //Guardar el Equipo//
-            const newTeam = new Team(data);
-            await newTeam.save();
-
-            //Pushear el Equipo al Torneo//
-            await Tournament.findOneAndUpdate(
-                {_id: data.tournament},
-                {$push:{teams: newTeam._id}},
-                {new:true});
-
-            //Automatizando las Jornadas//
-            if (tournamentExist.teams.length>0)
-            {
-                const newJourney = new Journey({name:`Journey ${tournamentExist.teams.length}`})
-                await newJourney.save();
-                
-                const pushJourneyTournament = await Tournament.findOneAndUpdate({ _id: data.tournament }, 
-                    { $push: { journeys: newJourney._id } },{ new: true });
-            }
-
-            const updateTournament = await Tournament.findOne({ _id: data.tournament}).populate('teams')
-                return res.send({ message: 'Team create successfully in this tournament', updateTournament });
-    } 
-    catch (err) 
-    {
+        const userTeam = await Team.findOne({ $and: [{ user:user},{ name: params.name }] })
+        if (userTeam)
+            return res.status(400).send({ message: 'This Team already Exist.' })
+        //Guardar el Equipo//
+        const newTeam = new Team(data);
+        await newTeam.save();
+        return res.send({ message: 'Saving team Successfully', newTeam })
+    }
+    catch (err) {
         console.log(err);
         return res.status(500).send({ message: 'Error saving this Team.', err });
     }
 }
 
 
-//GET || Obtener Un Equipo//
-exports.getTeamUser = async (req, res) => 
-{
-    try 
+//GETs || Obtener Equipos//
+exports.getTeamsUser = async (req, res) => {
+    try
     {
-        const teamId = req.params.id;
         const userId = req.user.sub;
-        const params = req.body;
-        const data = 
-        {
-            tournament: params.tournament,
-        };
-
-        let msg = validateData(data);
-
-        if(msg)
-            return res.status(400).send(msg);
-        
-        const teamExist = await Tournament.findOne({$and:[{_id: data.tournament}, {teams: teamId}, {user: userId}]}).populate('teams').lean();
-
-        if(!teamExist) 
-            return res.status(400).send({ message: 'Team not Found in this Tournament.' })
        
-        const team = await Team.findOne({ _id: teamId});
-        if (!team) 
-            return res.send({ message: 'Team Not Found.' });
-
-        return res.send({ messsage: 'Team Found:', team }); 
-    } 
+        const teamsExist = await Team.find({user: userId}).lean();
+    
+        if (!teamsExist)
+            return res.status(400).send({ message: 'Teams Not Found' });
+    
+        return res.send({ messsage: 'Teams Found:', teamsExist });
+    }
     catch (err) 
     {
         console.log(err);
-        return res.status(500).send({ message: 'Error getting this Team.' });
+        return res.status(500).send({ message: 'Error getting this Teams.' });
     }
 }
 
-
-//GETs || Obtener Equipos//
-exports.getTeamsUser = async (req, res) => 
-{
-    try 
+exports.getTeamsUserJourney = async (req, res) => {
+    try
     {
-        const userId = req.user.sub;
-        const params = req.body;
-        let data = 
-        {
-            tournament: params.tournament,
-        };
-
-        let msg = validateData(data);
-        if (msg)
-            return res.status(400).send(msg); 
-
-        const teamExist = await Tournament.findOne(
-            {$and:[{_id: data.tournament},  {user: userId}]}).populate('teams').lean();
-
-        if(!teamExist)
-            return res.status(400).send({message: 'Teams Not Founds'});        
-        
-        return res.send({ messsage: 'Teams Founds:', teams:teamExist.teams});
-        
-    } 
+        const userId = req.params.id;
+       
+        const teamsExist = await Team.find({user: userId}).lean();
+    
+        if (!teamsExist)
+            return res.status(400).send({ message: 'Teams Not Found' });
+    
+        return res.send({ messsage: 'Teams Found:', teamsExist });
+    }
     catch (err) 
     {
         console.log(err);
@@ -162,86 +94,85 @@ exports.getTeamsUser = async (req, res) =>
 
 
 //UPDATE || Actualizar Equipos//
-exports.updateTeam = async (req, res) => 
+exports.updateTeam = async(req, res)=>
 {
-    try 
+    try
     {
-        const teamId = req.params.id;
         const userId = req.user.sub;
+        const teamId = req.params.id;
         const params = req.body;
-        let data = 
+        const data =
         {
-            tournament: params.tournament,
+            name: params.name,
+            country: params.country,
+            description: params.description,
         };
-        
         let msg = validateData(data);
-        if (msg)
-            return res.status(400).send(msg); 
-        
-        const teamExist = await Tournament.findOne(
-            {$and:[{_id: data.tournament}, {user: userId}, {teams:teamId}]}).populate('teams').lean();
 
-        if(!teamExist)
-            return res.status(400).send({ message: 'Team not Found' })
+        if (msg)
+            return res.status(400).send(msg);
             
-        const checkparams = await checkUpdateTeams(params);
-        if (checkparams === false) 
-            return res.status(400).send({ message: 'Invalid Params to Update Team.' })
-        
-        const updateTeam = await Team.findOneAndUpdate({ _id: teamId }, params, { new: true }).lean();
-        if (!updateTeam) 
-            return res.send({ message: 'Team has not been Updated' })
-                    
-        return res.send({ message: 'Team Updated:', updateTeam })
-    }  
-    catch (err)
+        const teamExist = await Team.findOne({_id: teamId});
+        if(!teamExist)
+                return res.status(400).send({message: 'Team not found'});
+    
+            //- Verificar que no se duplique con otro Equipo.//
+        const notDuplicateTeam = await Team.findOne({name:params.name});
+            if(notDuplicateTeam && notDuplicateTeam.name != teamExist.name)
+                return res.status(400).send({message: 'Team is already exist.'});
+    
+            //- Actualizar el Equipo.//
+            const teamUpdated = await Team.findOneAndUpdate
+            (
+                {_id: teamId},
+                params,
+                {new: true}
+            ).lean();
+    
+            //- Verificar Actualización.//
+            if(!teamUpdated)
+                return res.status(400).send({message: ' Team not updated.'});
+            return res.send({message: 'Team updated successfully.', teamUpdated});
+    }
+    catch(err)
     {
         console.log(err);
-        return res.status(500).send({ message: 'Error updating this Team.', err});
+        return res.status(500).send({err, message: 'Error updating Team.'});
     }
 }
 
 
 //DELETE || Eliminar Equipos//
-exports.deleteTeam = async (req, res) => 
-{
+exports.deleteTeam = async (req, res) => {
     try 
     {
         const teamId = req.params.id;
         const userId = req.user.sub;
-        const params = req.body;
-        let data = 
-        {
-            tournament: params.tournament,
-        };
 
-        let msg = validateData(data);
-        if (msg) 
-            return res.status(400).send(msg);
-        
-        const teamExist = await Tournament.findOne(
-            {$and:[{_id: data.tournament}, {user: userId}, {teams:teamId}]}).populate('teams').lean();
-        
-        if(!teamExist)
-            return res.status(400).send({ message: 'Team not Found' })
-        
-        //Eliminando de Equipo//
-        const deleteTeam = await Team.findOneAndDelete({ _id: teamId});
+        const teamExist = await Team.findOne({ $and: [{ user:userId },{_id:teamId} ]}).lean();
+
+        if (!teamExist)
+            return res.status(400).send({ message: 'Team Not Found.}' });
+
         //Eliminando de Torneos//
-        const removeTeamTournament = await Tournament.findOneAndUpdate({$and:[{_id:data.tournament},{user: userId}]}, 
-            { $pull: {'teams':teamId} }, {new:true});
+        const removeTeamTournament = await Tournament.findOneAndUpdate({ $and: [{ user: teamExist.user }, { 'teams.team': teamId }] },
+            { $pull: { 'teams': { 'team': teamId } } }, { new: true });
         //Eliminando de Journeys//
-        const removeJourney = await Journey.findOneAndDelete({_id:teamExist.journeys.at(-1)});
-        const removeTeamJourney = await Tournament.findOneAndUpdate({journeys:removeJourney._id},
-            {$pull: { 'journeys': removeJourney._id}},
-            { new: true });
+        const removeJourney = await Journey.findOneAndDelete({ $or: [{ 'matches.localTeam': teamId }, { 'matches.visitingTeam': teamId }] });
+        if (!removeJourney) { }
+        else {
+            const removeTeamJourney = await Tournament.findOneAndUpdate({ journeys: removeJourney._id },
+                { $pull: { 'journeys': removeJourney._id } },
+                { new: true });
+        }
+
+        const deleteTeam = await Team.findOneAndDelete({ _id: teamId }).lean();
         if (!deleteTeam)
             return res.status(500).send({ message: 'Team Not Found or Already Delete.' });
-        
+
         return res.send({ message: 'Team Delete Successfully', deleteTeam });
-    } 
-    catch (err) 
-    {
+    }
+    catch (err) {
         console.log(err);
         return res.status(500).send({ message: 'Error deleting Team.', err });
     }
@@ -255,147 +186,136 @@ exports.updateTeamAdmin = async (req, res) => {
     try {
         const teamId = req.params.id;
         const params = req.body;
-        let data = 
+        let data =
         {
-            tournament: params.tournament,
+            name: params.name,
+            country: params.country,
+            description: params.description
         };
         let msg = validateData(data);
         if (msg)
             return res.status(400).send(msg);
 
-        const teamExist = await Tournament.findOne(
-            {$and:[{_id: data.tournament}, {teams:teamId}]}).populate('teams').lean();
+        const teamExist = await Team.findOne({ _id: teamId }).lean();
 
         if(!teamExist)
-            return res.status(400).send('Team Not Found.')
+            return res.status(400).send({ message: 'Team not Found' })
         
-        const checkUpdated = await checkUpdateTeams(params);
-        if (checkUpdated === false)
-            return res.status(400).send({ message: 'Invalid Params to Update Team.' })
-                
         const updateTeam = await Team.findOneAndUpdate({ _id: teamId }, params, { new: true }).lean();
         if (!updateTeam) 
-            return res.send({ message: 'No se ha podido actualizar el equipo' })
-        return res.send({ message: 'Team Updated:', updateTeam })
-
-    } 
-    catch (err) 
-    {
+            return res.status(400).send({ message: 'Team has not been Updated' })
+                    
+        return res.send({ message: 'Team Updated', updateTeam });
+    }
+    catch (err) {
         console.log(err);
-        return res.status(500).send({ message: 'Error actualizando el equipo' });
+        return res.status(500).send({ message: 'Error updating the team' });
     }
 }
 
 
 //cons Update tema//
 //UPDATE: actualiza equipo.
-
 exports.deleteTeamAdmin = async (req, res) => {
-    try 
-    {
+    try {
         const teamId = req.params.id;
-        const params = req.body;
-        let data = 
-        {
-            tournament: params.tournament,
-        };
 
-        let msg = validateData(data);
-        if (msg)
-            return res.status(400).send(msg); {
-            
-        const teamExist = await Tournament.findOne(
-            {$and:[{_id: data.tournament}, {teams:teamId}]}).populate('teams').lean();
+        const teamExist = await Team.findOne({ _id: teamId }).lean();
 
-        if(!teamExist)
-            return res.status(400).send({message:'Team Not Found.}'});
+        if (!teamExist)
+            return res.status(400).send({ message: 'Team Not Found.}' });
 
-        //Eliminando de Equipo//
-        const deleteTeam = await Team.findOneAndDelete({ _id: teamId});
         //Eliminando de Torneos//
-        const removeTeamTournament = await Tournament.findOneAndUpdate({$and:[{_id:data.tournament}]}, 
-            { $pull: {'teams':teamId} }, {new:true});
+        const removeTeamTournament = await Tournament.findOneAndUpdate({ $and: [{ user: teamExist.user }, { 'teams.team': teamId }] },
+            { $pull: { 'teams': { 'team': teamId } } }, { new: true });
         //Eliminando de Journeys//
-        const removeJourney = await Journey.findOneAndDelete({_id:teamExist.journeys.at(-1)});
-        const removeTeamJourney = await Tournament.findOneAndUpdate({journeys:removeJourney._id},
-            {$pull: { 'journeys': removeJourney._id}},
-            { new: true });
+        const removeJourney = await Journey.findOneAndDelete({ $or: [{ 'matches.localTeam': teamId }, { 'matches.visitingTeam': teamId }] });
+        if (!removeJourney) { }
+        else {
+            const removeTeamJourney = await Tournament.findOneAndUpdate({ journeys: removeJourney._id },
+                { $pull: { 'journeys': removeJourney._id } },
+                { new: true });
+        }
+
+        const deleteTeam = await Team.findOneAndDelete({ _id: teamId }).lean();
         if (!deleteTeam)
             return res.status(500).send({ message: 'Team Not Found or Already Delete.' });
 
         return res.send({ message: 'Team Delete Successfully', deleteTeam });
     }
-        
-    } 
     catch (err) {
         console.log(err);
-        return res.status(500).send({ message: 'Error deletin this Team.' });
+        return res.status(500).send({ message: 'Error deleting this Team.' });
     }
 }
 
 
 
 //GET || Obtener Equipo//
-exports.getTeamAdmin = async (req, res) => 
-{
-    try 
-    {
+exports.getTeam = async (req, res) => {
+    try {
         const teamId = req.params.id;
-        const params = req.body;
 
-        let data = 
-        {
-            tournament: params.tournament,
-        };
-
-        let msg = validateData(data);
-        if (msg) 
-            return res.status(400).send(msg);
-        
-            const teamExist = await Tournament.findOne(
-            {$and:[{_id: data.tournament}, {teams:teamId}]}).populate('teams').lean();
-
-            if(!teamExist)
-                return res.status(400).send({ message: 'Team Not Found in this Tournament.' })
-            
-            const team = await Team.findOne({ _id: teamId });
-            if (!team) 
-                return res.send({ message: 'Team has not been Updated' })
-               
-            return res.send({ messsage: 'Team Found:', team });
-    } 
-    catch (err) 
-    {
-        console.log(err);
-        return res.status(500).send({ message: 'Error getting Team.', err});
+        const team = await Team.findOne({ _id: teamId }).populate('user').lean();
+        if (!team) {
+            return res.status(400).send({ message: 'This Team does not exist.' })
+        }
+        else {
+            return res.send({ message: 'Team Found:', team });
+        }
     }
-}
+    catch (err) {
+        console.log(err)
+        return res.status(500).send({ message: 'Error getting Team.', err });
+    }
+};
 
 
 //GETs | Obtener Equipos//
 exports.getTeamsAdmin = async (req, res) => {
     try {
+        const teamsExist = await Team.find().populate('user').lean();
+
+        if (!teamsExist)
+            return res.status(400).send({ message: 'Teams Not Found' });
+
+        return res.send({ messsage: 'Teams Found:', teamsExist });
+
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).send({ message: 'Error getting Teams.', err });
+    }
+}
+
+//CREATE | Agregar Equipos//
+exports.createTeamAdmin = async (req, res) => {
+    try {
         const params = req.body;
-        let data = 
+        const data =
         {
-            tournament: params.tournament,
+            user: params.user,
+            name: params.name,
+            country: params.country,
+            description: params.description,
         };
 
         let msg = validateData(data);
-        if (msg) 
-            return res.status(400).send(msg);
-        
-        const teamExist = await Tournament.findOne(
-            {$and:[{_id: data.tournament}]}).populate('teams').lean();
-        
-        if(!teamExist)
-            return res.status(400).send({message:'Teams Not Found'});
-            
-        return res.send({ messsage: 'Team Founds:', teams:teamExist.teams});
-        
-    } catch (err) {
+        if (msg) return res.status(400).send(msg);
+
+        const userTeam = await Team.findOne({ $and: [{ user: params.user }, { name: params.name }] })
+
+        if (userTeam)
+            return res.status(400).send({ message: 'This user already owns this Team.' })
+
+        //Guardar el Equipo//
+        const newTeam = new Team(data);
+        await newTeam.save();
+        return res.send({ message: 'Saving team successfully', newTeam })
+    }
+    catch (err) {
         console.log(err);
-        return res.status(500).send({ message: 'Error getting Teams.', err});
+        return res.status(500).send({ message: 'Error saving this Team.', err });
     }
 }
 
@@ -405,33 +325,31 @@ exports.getTeamsAdmin = async (req, res) => {
 //------ ng2Charts -----------//
 
 exports.ng2charts = async (req, res) => {
-    try 
-    {
+    try {
         const user = req.user.sub;
         const params = req.body;
-        let data = 
+        let data =
         {
             tournament: params.tournament,
         };
 
         let msg = validateData(data);
         if (msg)
-        return res.status(400).send(msg); 
-        
-        const tournamentExist = await Tournament.findOne({ _id: data.tournament }).populate('teams');
-        if(!tournamentExist)
-            return res.status(400).send({message:'Tournament not Found'})
+            return res.status(400).send(msg);
 
-        const teamsExist = tournamentExist.teams.sort((teamLocal, teamVisiting) => 
-        {
-                return - teamLocal.proGoals + teamVisiting.proGoals
+        const tournamentExist = await Tournament.findOne({ _id: data.tournament }).populate('teams');
+        if (!tournamentExist)
+            return res.status(400).send({ message: 'Tournament not Found' })
+
+        const teamsExist = tournamentExist.teams.sort((teamLocal, teamVisiting) => {
+            return - teamLocal.proGoals + teamVisiting.proGoals
         });
 
-        if(!teamsExist)
-            return res.status(400).send({message:'Teams Not Founds.'})
+        if (!teamsExist)
+            return res.status(400).send({ message: 'Teams Not Founds.' })
 
         return res.send({ messsage: 'Teams Founds:', teamsExist });
-        
+
     } catch (err) {
         console.log(err);
         return res.status(500).send({ message: 'Error getting teams.' });
