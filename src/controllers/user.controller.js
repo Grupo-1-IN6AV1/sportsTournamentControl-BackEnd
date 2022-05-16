@@ -142,7 +142,7 @@ exports.updateUser = async(req, res)=>{
         if(!userExist) return res.send({message: 'User not found'});
         const emptyParams = await checkUpdateAdmin(params);
         if(emptyParams === false) return res.status(400).send({message: 'Empty params or params not update'});
-        if(userExist.role === 'ADMIN') return res.send({message: 'User with ADMIN role cant update'});
+        if(userExist.role === 'ADMIN') return res.status(400).send({message: 'User with ADMIN role cant update'});
         const alreadyUsername = await alreadyUser(params.username);
         if(alreadyUsername && userExist.username != alreadyUsername.username) return res.send({message: 'Username already taken'});
         if(params.role != 'ADMIN' && params.role != 'CLIENT') return res.status(400).send({message: 'Invalid role'});

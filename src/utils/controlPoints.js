@@ -59,6 +59,24 @@ exports.controlPoints = (dataMatches) =>
             calculatePoints.tiedMatchesVisiting = 1;
             calculatePoints.differenceGoals = 0
         }
+        if(calculatePoints.teamPointsLocal<=0)
+            calculatePoints.teamPointsLocal = 0
+        if(calculatePoints.teamPointsVisiting<=0)
+            calculatePoints.teamPointsVisiting = 0
+        if(calculatePoints.wonMatchesLocal<=0)
+            calculatePoints.wonMatchesLocal=0 
+        if(calculatePoints.wonMatchesVisiting<=0)
+            calculatePoints.wonMatchesVisiting=0
+        if(calculatePoints.tiedMatchesLocal<=0)
+            calculatePoints.tiedMatchesLocal=0
+        if(calculatePoints.tiedMatchesVisiting<=0)
+            calculatePoints.tiedMatchesVisiting=0
+        if(calculatePoints.lostMatchesLocal<=0)
+            calculatePoints.lostMatchesLocal=0
+        if(calculatePoints.lostMatchesVisiting<=0)
+            calculatePoints.lostMatchesVisiting=0
+         
+        
         const controlPoints = 
         {
             teamPointsLocal: calculatePoints.teamPointsLocal,
@@ -72,7 +90,6 @@ exports.controlPoints = (dataMatches) =>
             differenceGoalsLocal: calculatePoints.differenceGoalsLocal,
             differenceGoalsVisiting: calculatePoints.differenceGoalsVisiting,
         };
-
         return controlPoints;
 
     }

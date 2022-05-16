@@ -73,6 +73,25 @@ exports.getTeamsUser = async (req, res) => {
     }
 }
 
+exports.getTeamsUserJourney = async (req, res) => {
+    try
+    {
+        const userId = req.params.id;
+       
+        const teamsExist = await Team.find({user: userId}).lean();
+    
+        if (!teamsExist)
+            return res.status(400).send({ message: 'Teams Not Found' });
+    
+        return res.send({ messsage: 'Teams Found:', teamsExist });
+    }
+    catch (err) 
+    {
+        console.log(err);
+        return res.status(500).send({ message: 'Error getting this Teams.' });
+    }
+}
+
 
 //UPDATE || Actualizar Equipos//
 exports.updateTeam = async(req, res)=>

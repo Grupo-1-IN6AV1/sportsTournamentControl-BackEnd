@@ -19,4 +19,13 @@ api.get('/tableTournament/:id', mdAuth.ensureAuth, tournamentController.tableTou
 //---- M A T C H ----// 
 api.post('/addTeamTournament/:id', mdAuth.ensureAuth, tournamentController.addTeamTournament);
 
+api.post('/createTournamentByAdmin', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.createTournamentByAdmin);
+api.put('/updateTournamentByAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.updateTournamentByAdmin);
+api.delete('/deleteTournamentByAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.deleteTournamentByAdmin);
+api.get('/getTournamentsByAdmin', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.getTournamentsByAdmin)
+api.get('/getTournamentByAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.getTournamentByAdmin)
+//---- M A T C H ----// 
+api.post('/addTeamTournamentByAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.addTeamTournamentByAdmin);
+api.get('/getTournamentsByAdminForUser/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], tournamentController.getTournamentsByAdminForUser)
+
 module.exports = api;

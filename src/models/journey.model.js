@@ -7,7 +7,6 @@ const journeySchema = mongoose.Schema({
     startDate: Date,
     finalDate: Date,
     matches: [{
-        date: Date,
         localTeam: {type: mongoose.Schema.ObjectId, ref: 'Team'},
         localScore: Number,
         visitingTeam: {type: mongoose.Schema.ObjectId, ref: 'Team'},

@@ -18,7 +18,7 @@ api.post('/createTeamAdmin', [mdAuth.ensureAuth, mdAuth.isAdmin], teamController
 api.get('/getTeamsAdmin', [mdAuth.ensureAuth, mdAuth.isAdmin], teamController.getTeamsAdmin);
 api.put('/updateTeamAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], teamController.updateTeamAdmin);
 api.delete('/deleteTeamAdmin/:id', [mdAuth.ensureAuth, mdAuth.isAdmin], teamController.deleteTeamAdmin);
-
+api.get('/getTeamsJourneys/:id',[mdAuth.ensureAuth, mdAuth.isAdmin], teamController.getTeamsUserJourney)
 
 //ng2Charts//
 api.get('/ng2charts', mdAuth.ensureAuth, teamController.ng2charts);
