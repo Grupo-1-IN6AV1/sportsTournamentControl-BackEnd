@@ -170,6 +170,32 @@ exports.getMatches = async (req, res) =>
     }
 }
 
+//GETs || Obtener Partidos//
+exports.getMatch = async (req, res) => 
+{
+    try 
+    {
+        
+        const journeyId = req.params.id;
+        const params = req.body;
+        const matchId = params.match
+
+        const journeyExist = await Journey.findOne({ _id: journeyId}).populate('matches.localTeam matches.visitingTeam');
+        const match = await journeyExist.matches.id(matchId);
+        if (!match) 
+                return res.send({ message: 'Match Not Found' }); 
+            
+            
+            return res.send({ messsage: 'Match Found:', match }); 
+                               
+    } 
+    catch (err) 
+    {
+        console.log(err);
+        return res.status(500).send({ message: 'Error getting Match', err});
+    }
+}
+
 
 exports.getJourney = async (req, res) => {
     try 
@@ -364,5 +390,146 @@ exports.deleteMatch = async (req, res) => {
     {
         console.log(err);
         return res.status(500).send({ message: 'Error deleting Match.', err });
+    }
+}
+
+
+exports.getTeamTournament = async (req, res) => 
+{
+    try
+    {
+        const idTournament = req.params.id
+        const tournament = await Tournament.findOne({_id:idTournament}).populate('teams.team').lean();
+        const teamsExist = await tournament.teams
+        return res.send({teamsExist})
+    }
+    catch(err)
+    {
+        console.log(err);
+        return res.status(500).send({message: 'Error getting Teams',err});
+    }
+}
+
+exports.updateMatchJourney = async (req, res) => {
+    try {
+        const journeyId = req.params.id;
+        const params = req.body;
+        let data =
+        {
+            matchId: params.matchId,
+            tournament: params.tournament,
+            localTeam: params.localTeam,
+            localScore: params.localScore,
+            visitingTeam: params.visitingTeam,
+            visitingScore: params.visitingScore,
+        };
+
+        //Valida data obligatoria
+        let msg = validateData(data);
+        if (msg)
+            return res.status(400).send(msg);
+
+        const journey = await Journey.findOne({ _id: journeyId}).populate('matches.localTeam matches.visitingTeam');
+        if(!journey) return res.status(400).send({message: 'Journey Not Found.'});
+        const matches = journey.matches.id(data.matchId);
+
+
+            //Se llama a la funcion para que haga la logica del partido//
+            const dataTeams = await controlPoints(matches);
+
+            //Actualiza los datos del equipo Local          const checkGames = await Tournament.findOne(
+            const updateDataLocalTeam = await Tournament.findOneAndUpdate(
+                { $and: [{ _id: data.tournament }, { "teams.team": matches.localTeam._id}] },
+                {
+                    $inc:
+                    {
+                        "teams.$.teamPoints": -dataTeams.teamPointsLocal,
+                        "teams.$.playedMatches": -1,
+                        "teams.$.wonMatches": -dataTeams.wonMatchesLocal,
+                        "teams.$.tiedMatches": -dataTeams.tiedMatchesLocal,
+                        "teams.$.lostMatches": -dataTeams.lostMatchesLocal,
+                        "teams.$.proGoals": -matches.localScore,
+                        "teams.$.againstGoals": -matches.visitingScore,
+                        "teams.$.differenceGoals": -dataTeams.differenceGoalsLocal
+                    }
+                },
+                { new: true }).lean();
+
+            //Actualiza los datos del equipo visitante
+            const updateDataVisitingTeam = await Tournament.findOneAndUpdate(
+                { $and: [{ _id: data.tournament }, { "teams.team": matches.visitingTeam._id }] },
+                {
+                    $inc:
+                    {
+                        "teams.$.teamPoints": -(dataTeams.teamPointsVisiting),
+                        "teams.$.playedMatches": -1,
+                        "teams.$.wonMatches": -(dataTeams.wonMatchesVisiting),
+                        "teams.$.tiedMatches": -(dataTeams.tiedMatchesVisiting),
+                        "teams.$.lostMatches": -(dataTeams.lostMatchesVisiting),
+                        "teams.$.proGoals": -(matches.visitingScore),
+                        "teams.$.againstGoals": -(matches.localScore),
+                        "teams.$.differenceGoals": -(dataTeams.differenceGoalsVisiting)
+                    }
+                },
+                { new: true }).lean();
+
+            //NUEVOS VALORES//    
+            
+            //Se llama a la funcion para que haga la logica del partido//
+            const dataTeamsUpdate = await controlPoints(data);
+
+            //Actualiza los datos del equipo Local
+            const updateDataLocalTeamUpdated = await Tournament.findOneAndUpdate(
+                { $and: [{ _id: data.tournament }, { "teams.team": data.localTeam }] },
+                {
+                    $inc:
+                    {
+                        "teams.$.teamPoints": dataTeamsUpdate.teamPointsLocal,
+                        "teams.$.playedMatches": 1,
+                        "teams.$.wonMatches": dataTeamsUpdate.wonMatchesLocal,
+                        "teams.$.tiedMatches": dataTeamsUpdate.tiedMatchesLocal,
+                        "teams.$.lostMatches": dataTeamsUpdate.lostMatchesLocal,
+                        "teams.$.proGoals": data.localScore,
+                        "teams.$.againstGoals": data.visitingScore,
+                        "teams.$.differenceGoals": dataTeamsUpdate.differenceGoalsLocal
+                    }
+                },
+                { new: true }).lean();
+
+            //Actualiza los datos del equipo visitante
+            const updateDataVisitingTeamUpdate = await Tournament.findOneAndUpdate(
+                { $and: [{ _id: data.tournament }, { "teams.team": data.visitingTeam }] },
+                {
+                    $inc:
+                    {
+                        "teams.$.teamPoints": dataTeamsUpdate.teamPointsVisiting,
+                        "teams.$.playedMatches": 1,
+                        "teams.$.wonMatches": dataTeamsUpdate.wonMatchesVisiting,
+                        "teams.$.tiedMatches": dataTeamsUpdate.tiedMatchesVisiting,
+                        "teams.$.lostMatches": dataTeamsUpdate.lostMatchesVisiting,
+                        "teams.$.proGoals": data.visitingScore,
+                        "teams.$.againstGoals": data.localScore,
+                        "teams.$.differenceGoals": dataTeamsUpdate.differenceGoalsVisiting
+                    }
+                },
+                { new: true }).lean();
+
+                const updateJourney = await Journey.updateOne(
+                    {_id:journeyId,
+                    "matches._id": data.matchId},
+                    {$set:
+                        {
+                            "matches.$.localTeam": data.localTeam,
+                            "matches.$.localScore": data.localScore,
+                            "matches.$.visitingTeam": data.visitingTeam,
+                            "matches.$.visitingScore": data.visitingScore,
+                        }});
+
+            return res.send({message: 'Match updated successfully ', matches})
+    }
+    catch (err) 
+    {
+        console.log(err);
+        return res.status(500).send({ message: 'Error Updating Match.', err });
     }
 }

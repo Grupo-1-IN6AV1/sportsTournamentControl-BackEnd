@@ -176,6 +176,10 @@ exports.deleteTournament = async(req, res)=>
         });
         if(!tournamentExist) 
             return res.send({message: 'Tournament not found'});
+        for(let journey of tournamentExist.journeys)
+        {
+                const deleteJourney = await Journey.findOneAndDelete({_id:journey})
+        }
         const deleteTournament = await Tournament.findOneAndDelete({
             $and:
                 [
@@ -326,7 +330,7 @@ exports.updateTournamentByAdmin = async(req, res)=>{
         if (msg)
             return res.status(400).send(msg);
         if(Object.entries(params).length === 0) return res.status(400).send({message: 'Empty parameters'});
-        const userExist = await User.findOne({_id: params.user});
+        const userExist = await User.findOne({_id: req.user.sub});
         if(userExist.role != 'ADMIN') return res.send({message: 'Unauthorized to this function'});
         const tournamentExist = await Tournament.findOne({_id: tournamentId});
         if(!tournamentExist) return res.send({message: 'Tournament not found'});
@@ -351,9 +355,15 @@ exports.deleteTournamentByAdmin = async(req, res)=>{
         if(userExist.role != 'ADMIN') return res.status(400).send({message: 'Unauthorized to this function'});
         const tournamentExist = await Tournament.findOne({_id: tournamentId});
         if(!tournamentExist) return res.send({message: 'Tournament not found'});
+
+        for(let journey of tournamentExist.journeys)
+        {
+            const deleteJourney = await Journey.findOneAndDelete({_id:journey})
+        }
+
         const deleteTournament = await Tournament.findOneAndDelete({_id: tournamentId});
         if(!deleteTournament) return res.status(401).send({message: 'Tournament not found'});
-        return res.send({message: 'Tournament deleted successfully', deleteTournament})  ;
+        return res.send({message: 'Tournament deleted successfully', deleteTournament});
     }catch(err){
         console.log(err);
         return res.status(500).send({err, message: 'Error deleting Tournament'});

@@ -8,7 +8,10 @@ const Tournament = require('../models/tournament.model');
 const Journey = require('../models/journey.model');
 
 //Validación de Data//
-const { validateData } = require('../utils/validate');
+const {validateData} = require('../utils/validate');
+
+//Validación de Data//
+const {controlPoints} = require('../utils/controlPoints');
 
 //F U N C I O N E S     P Ú B L I C A S//
 
@@ -158,12 +161,15 @@ exports.deleteTeam = async (req, res) => {
         const removeTeamTournament = await Tournament.findOneAndUpdate({ $and: [{ user: teamExist.user }, { 'teams.team': teamId }] },
             { $pull: { 'teams': { 'team': teamId } } }, { new: true });
         //Eliminando de Journeys//
-        const removeJourney = await Journey.findOneAndDelete({ $or: [{ 'matches.localTeam': teamId }, { 'matches.visitingTeam': teamId }] });
+        const removeJourney = await Journey.findOne({ $or: [{ 'matches.localTeam': teamId }, { 'matches.visitingTeam': teamId }] });
         if (!removeJourney) { }
         else {
-            const removeTeamJourney = await Tournament.findOneAndUpdate({ journeys: removeJourney._id },
-                { $pull: { 'journeys': removeJourney._id } },
+            const removeMatchJourney1 = await Journey.findOneAndUpdate({_id: removeJourney._id },
+                { $pull: { 'matches' : { 'localTeam' : teamId }} },
                 { new: true });
+            const removeMatchJourney2 = await Journey.findOneAndUpdate({_id: removeJourney._id },
+                    { $pull: { 'matches' : { 'visitingTeam' : teamId }} },
+                    { new: true });
         }
 
         const deleteTeam = await Team.findOneAndDelete({ _id: teamId }).lean();
@@ -218,25 +224,13 @@ exports.updateTeamAdmin = async (req, res) => {
 //UPDATE: actualiza equipo.
 exports.deleteTeamAdmin = async (req, res) => {
     try {
-        const teamId = req.params.id;
+        var teamId = req.params.id;
 
         const teamExist = await Team.findOne({ _id: teamId }).lean();
 
         if (!teamExist)
             return res.status(400).send({ message: 'Team Not Found.}' });
-
-        //Eliminando de Torneos//
-        const removeTeamTournament = await Tournament.findOneAndUpdate({ $and: [{ user: teamExist.user }, { 'teams.team': teamId }] },
-            { $pull: { 'teams': { 'team': teamId } } }, { new: true });
-        //Eliminando de Journeys//
-        const removeJourney = await Journey.findOneAndDelete({ $or: [{ 'matches.localTeam': teamId }, { 'matches.visitingTeam': teamId }] });
-        if (!removeJourney) { }
-        else {
-            const removeTeamJourney = await Tournament.findOneAndUpdate({ journeys: removeJourney._id },
-                { $pull: { 'journeys': removeJourney._id } },
-                { new: true });
-        }
-
+        
         const deleteTeam = await Team.findOneAndDelete({ _id: teamId }).lean();
         if (!deleteTeam)
             return res.status(500).send({ message: 'Team Not Found or Already Delete.' });
